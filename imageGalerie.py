@@ -2,8 +2,7 @@
 
 import PIL.Image as PIL
 
-
-class image_galerie :
+class imageGalerie :
     def __init__(self, image):
         """ image est un chemin d'accès"""
         self.image = PIL.open(image)
