@@ -38,6 +38,7 @@ def couleur_proche(val_moyenne, dico_galerie):
     None.
 
     """
+
     couleur_proche = []
     for image, val in dico_galerie.values():
         liste_pixel_select = []
@@ -49,10 +50,10 @@ def couleur_proche(val_moyenne, dico_galerie):
                 if len(liste_pixel_select)==3:
                     couleur_proche.append(image)
     return couleur_proche
-                    
-dossier = "C:/Users/DAMON Coline/Documents/GitHub/decomposition-images/gallerie"
-dico = dico_galerie(dossier)         
-val_moy = (12, 9,10)   
-print( couleur_proche(val_moy, dico) )        
-            
-        
+
+#Tests
+if __name__ == "__main__":
+    dossier = "C:/Users/DAMON Coline/Documents/GitHub/decomposition-images/gallerie"
+    dico = dico_galerie(dossier)         
+    val_moy = (12, 9,10)   
+    print( couleur_proche(val_moy, dico) )
