@@ -43,10 +43,4 @@ class imageGalerie :
         height = int(self.height * coef)
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
-        
-        
 
-
-
-        
-    
