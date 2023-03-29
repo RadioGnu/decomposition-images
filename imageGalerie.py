@@ -1,4 +1,4 @@
-"""Fichier contenant la definition de la classe permettant de cr√©er les objet image a partir des photos de la galeries d'image"""
+Ôªø"""Fichier contenant la definition de la classe permettant de cr√É¬©er les objet image a partir des photos de la galeries d'image"""
 
 import PIL.Image as PIL
 
@@ -11,7 +11,7 @@ class imageGalerie :
 
         Parameters
         ----------
-        image : chemin d'accËs de l'image dans le gestionaire de fichier
+        image : chemin d'acc√®s de l'image dans le gestionaire de fichier
             DESCRIPTION.
 
         Returns
@@ -19,7 +19,7 @@ class imageGalerie :
         None.
 
         """
-        self.image = PIL.open(image) #ouvre l'image avec la bibliothËque pour pouvoir utiliser les fonctions
+        self.image = PIL.open(image) #ouvre l'image avec la biblioth√®que pour pouvoir utiliser les fonctions
         self.auto_rescale() #permet que toutes les images soient dans les dimensions voulues
         self.width = self.image.width
         self.height = self.image.height
@@ -28,7 +28,7 @@ class imageGalerie :
         
     def liste_RGB(self):
         """
-        crÈation d'une liste contenant les tuples des valeurs en rouge, vert et bleu pour chaque pixel de l'image
+        cr√©ation d'une liste contenant les tuples des valeurs en rouge, vert et bleu pour chaque pixel de l'image
         
 
         Returns
@@ -67,12 +67,12 @@ class imageGalerie :
         mb = bleu/len(self.couleur)
         
         self.moyenne = (mr, mv, mb)
-        return self.moyenne #permet d'acceder a la valeur lorsque la fonction est appelÈe
+        return self.moyenne #permet d'acceder a la valeur lorsque la fonction est appel√©e
     
     
     def auto_rescale(self):
         """
-        distord et retrecie l'image pour en faire un carrÈ de 500*500, taille maximale ou elles seront affichÈ sur le canevas
+        distord et retrecie l'image pour en faire un carr√© de 500*500, taille maximale ou elles seront affich√© sur le canevas
         
         Returns
         -------
