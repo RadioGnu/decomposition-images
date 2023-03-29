@@ -5,7 +5,7 @@ import time
 
 
 class image_galerie :
-    def __init__(self, image):
+    def __init__(self, chemin):
         """
         initialisation de l'objet
 
@@ -19,7 +19,8 @@ class image_galerie :
         None.
 
         """
-        self.image = PIL.open(image) #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
+        self.chemin = chemin 
+        self.image = PIL.open(chemin) #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
         self.auto_rescale()
         self.width = self.image.width
         self.height = self.image.height
