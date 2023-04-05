@@ -1,17 +1,17 @@
-"""Fichier contenant la definition de la classe permettant de cr√©er les objet image a partir des photos de la galeries d'image"""
+"""Fichier contenant la definition de la classe permettant de cr√É¬©er les objet image a partir des photos de la galeries d'image"""
 
 import PIL.Image as PIL
 import time
 
 
-class image_galerie :
+class imageGalerie :
     def __init__(self, chemin):
         """
         initialisation de l'objet
 
         Parameters
         ----------
-        image : chemin d'accËs de l'image dans le gestionaire de fichier
+        image : chemin d'acc√®s de l'image dans le gestionaire de fichier
             DESCRIPTION.
 
         Returns
@@ -20,7 +20,7 @@ class image_galerie :
 
         """
         self.chemin = chemin 
-        self.image = PIL.open(chemin) #ouvre l'image avec la bibliothËque pour pouvoir utiliser les fonctions
+        self.image = PIL.open(chemin) #ouvre l'image avec la biblioth√®que pour pouvoir utiliser les fonctions
         self.auto_rescale()
         self.width = self.image.width
         self.height = self.image.height
@@ -29,7 +29,7 @@ class image_galerie :
         
     def liste_RGB(self):
         """
-        crÈation d'une liste contenant les tuples des valeurs en rouge, vert et bleu pour chaque pixel de l'image
+        cr√©ation d'une liste contenant les tuples des valeurs en rouge, vert et bleu pour chaque pixel de l'image
         
 
         Returns
@@ -73,7 +73,7 @@ class image_galerie :
     
     def auto_rescale(self):
         """
-        distord et retrecie l'image pour en faire un carrÈ de 500*500, taille maximale ou elles seront affichÈ sur le canevas
+        distord et retrecie l'image pour en faire un carr√© de 500*500, taille maximale ou elles seront affich√© sur le canevas
         
         Returns
         -------
@@ -92,14 +92,3 @@ class image_galerie :
         height = int(self.height * coef)
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
-
-
-<<<<<<< Updated upstream:Class galerie.py
-
-        
-    
-=======
-    
-
-
->>>>>>> Stashed changes:imageGalerie.py
