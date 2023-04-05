@@ -25,9 +25,12 @@ class interface:
         self.boutoncharger.bind('<Button-1>', self.charger)
         self.boutongalerie=tk.Button(self.racine, text="changer de galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
+        self.boutoncouleur = tk.Checkbutton(self.racine, text="couleur")
+        self.bouton_black_white = tk.Checkbutton(self.racine, text = "noir et blanc")
         self.creer_mosaique()
         self.creer_mignature()
         self.positionner()
+        self.choix_couleur()
 
 
     #peitte photo : canvas pour afficher l'image d'origine
@@ -73,6 +76,10 @@ class interface:
         im = Image.open(image)
         logo = ImageTk.PhotoImage(im, master=self.racine)
         self.mosaique.create_image(x, y, anchor = tk.NW, image = logo) #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
+        
+    def choix_couleur(self):
+        
+        
 
 app=interface()
 app.racine.mainloop()
