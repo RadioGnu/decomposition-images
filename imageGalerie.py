@@ -1,18 +1,17 @@
-"""Fichier contenant la definition de la classe permettant de crÃ©er les objet image a partir des photos de la galeries d'image"""
+"""Fichier contenant la definition de la classe permettant de creer les objets
+image a partir des photos de la galerie d'images"""
+
 
 import PIL.Image as PIL
-import time
 
 
 class imageGalerie :
     def __init__(self, chemin):
-        """
-        initialisation de l'objet
+        """initialisation de l'objet
 
         Parameters
         ----------
-        image : chemin d'accès de l'image dans le gestionaire de fichier
-            DESCRIPTION.
+        chemin : chemin d'accès de l'image dans le gestionaire de fichier
 
         Returns
         -------
@@ -20,7 +19,9 @@ class imageGalerie :
 
         """
         self.chemin = chemin 
-        self.image = PIL.open(chemin) #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
+        #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
+        self.image = PIL.open(chemin) 
+        #permet que toutes les images soient dans les dimensions voulues
         self.auto_rescale()
         self.width = self.image.width
         self.height = self.image.height
@@ -47,15 +48,15 @@ class imageGalerie :
         """
         renvoie un tuple RGB correspondant a la couleur moyenne de l'image
 
-        Returns
+        Returns self.moyenn
         -------
-        TYPE
-            tuple des couleurs moyennes.
+        TYPE : tuple 
+        tuple des trois moyenne de couleurs .
 
         """
         
         self.liste_RGB()
-        rouge = 0
+        rouge = 0 #initialisation
         vert = 0
         bleu = 0
         for RGB in self.couleur: #parcour de la liste de pixel (pas fait de tableau car plus simple a parcourir)
@@ -63,12 +64,12 @@ class imageGalerie :
             vert += RGB[1]
             bleu += RGB[2]
         
-        mr = rouge/len(self.couleur)
+        mr = rouge/len(self.couleur) #calcul des moyennes
         mv = vert/len(self.couleur)
         mb = bleu/len(self.couleur)
         
         self.moyenne = (mr, mv, mb)
-        return self.moyenne
+        return self.moyenne #permet d'acceder a la valeur lorsque la fonction est appelée
     
     
     def auto_rescale(self):
@@ -80,15 +81,29 @@ class imageGalerie :
         None.
 
         """
-        width = 500
+        width = 500 #dimensions voulue pour les images
         height = 500
         self.image = self.image.resize((width, height))
         
     
     
-    def rescale(self, coef):
-        """permet de mettre l'image a la taille voulu pour le caneva"""
-        width = int(self.width * coef)
-        height = int(self.height * coef)
+    def rescale(self, x):
+        """
+        permet de mettre l'image a la taille voulu pour le caneva
+
+
+        Parameters
+        ----------
+        coef : float
+            coefiscient de reduction de l'image.
+
+        Returns
+        -------
+        rescaled_image : image (jpeg, png ... en fonction de l'image d'origine)
+
+        """
+        
+        width = int(x)
+        height = int(x)
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
