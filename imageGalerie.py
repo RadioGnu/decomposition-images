@@ -1,7 +1,6 @@
 """Fichier contenant la definition de la classe permettant de creer les objets
 image a partir des photos de la galerie d'images"""
 
-
 import PIL.Image as PIL
 
 
@@ -89,13 +88,12 @@ class imageGalerie :
     
     def rescale(self, x):
         """
-        permet de mettre l'image a la taille voulu pour le caneva
-
-
+        permet de mettre l'image a la taille voulue pour le canevas
+        
         Parameters
         ----------
         coef : float
-            coefiscient de reduction de l'image.
+            coefficient de reduction de l'image.
 
         Returns
         -------
