@@ -13,13 +13,16 @@ import main as f
 
 class interface:
 
-    #iniit : les trucs qui seront forcément là, et auxquelles on touche pas : Boutons, slider( variable self.division).
+    #init : les trucs qui seront forcément là, et auxquels on touche pas : 
+    #Boutons, slider (variable self.division).
     def __init__(self):
         self.racine = tk.Tk()
         self.racine.geometry("800x600")
         self.racine.title("DECOUPIMAGE 20000")
         self.division = tk.IntVar()
-        self.slider=tk.Scale(self.racine, orient='horizontal', from_=1, to=100 ,resolution=1, length=200, variable = self.division, font=("Calibri", 8))
+        self.slider=tk.Scale(self.racine, orient='horizontal', from_=1, to=100,
+                             resolution=1, length=200, variable = self.division,
+                             font=("Calibri", 8))
         
         self.boutonlancer=tk.Button(self.racine, text="lancer")
         self.boutonlancer.bind('<Button-1>', self.lancer)
@@ -31,7 +34,8 @@ class interface:
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
 
         self.boutoncouleur = tk.Checkbutton(self.racine, text="couleur")
-        self.bouton_black_white = tk.Checkbutton(self.racine, text = "noir et blanc")
+        self.bouton_black_white = tk.Checkbutton(self.racine, 
+                                                 text = "noir et blanc")
 
         self.creer_mosaique()
         self.creer_mignature()
@@ -39,7 +43,7 @@ class interface:
         self.choix_couleur()
 
 
-    #peitte photo : canvas pour afficher l'image d'origine
+    #petite photo : canvas pour afficher l'image d'origine
     def creer_mignature(self):
         self.mignature=tk.Canvas(self.racine, background="white", height=200, width=200)
         #self.mignature.create_image(0,0, anchor = tk.NW, image=self.photo)
@@ -95,7 +99,8 @@ class interface:
     def carreau(self, image, x, y):
         im = Image.open(image)
         logo = ImageTk.PhotoImage(im, master=self.racine)
-        self.mosaique.create_image(x, y, anchor = tk.NW, image = logo) #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
+        #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
+        self.mosaique.create_image(x, y, anchor = tk.NW, image = logo) 
 
         
     def choix_couleur(self):
