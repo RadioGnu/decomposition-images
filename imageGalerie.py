@@ -28,8 +28,8 @@ class imageGalerie :
         
         
     def liste_RGB(self):
-        """
-        création d'une liste contenant les tuples des valeurs en rouge, vert et bleu pour chaque pixel de l'image
+        """Création d'une liste contenant les tuples des valeurs 
+        en rouge, vert et bleu pour chaque pixel de l'image.
         
 
         Returns
@@ -40,55 +40,59 @@ class imageGalerie :
         self.couleur = []
         for i in range (self.width):
             for j in range(self.height):
-                RGB = self.image.getpixel((i,j)) #retourne un tupple RGB du pixel de position i, j
+                #retourne un tuple RGB du pixel de position (i, j)
+                RGB = self.image.getpixel((i,j)) 
                 self.couleur.append(RGB)
                 
     def couleur_moyenne(self):
-        """
-        renvoie un tuple RGB correspondant a la couleur moyenne de l'image
+        """Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
 
         Returns self.moyenn
         -------
         TYPE : tuple 
-        tuple des trois moyenne de couleurs .
+        tuple des trois moyenne de couleurs.
 
         """
         
         self.liste_RGB()
-        rouge = 0 #initialisation
+        #initialisation
+        rouge = 0 
         vert = 0
         bleu = 0
-        for RGB in self.couleur: #parcour de la liste de pixel (pas fait de tableau car plus simple a parcourir)
+        #parcours de la liste de pixel
+        for RGB in self.couleur: 
             rouge += RGB[0]
             vert += RGB[1]
             bleu += RGB[2]
         
-        mr = rouge/len(self.couleur) #calcul des moyennes
+        #calcul des moyennes
+        mr = rouge/len(self.couleur) 
         mv = vert/len(self.couleur)
         mb = bleu/len(self.couleur)
         
         self.moyenne = (mr, mv, mb)
-        return self.moyenne #permet d'acceder a la valeur lorsque la fonction est appelée
+        #permet d'acceder à la valeur lorsque la fonction est appelée
+        return self.moyenne 
     
     
     def auto_rescale(self):
-        """
-        distord et retrecie l'image pour en faire un carré de 500*500, taille maximale ou elles seront affiché sur le canevas
+        """Distord et rétrécit l'image pour en faire un carré de 500*500, 
+        taille maximale où elle sera affichée sur le canevas.
         
         Returns
         -------
         None.
 
         """
-        width = 500 #dimensions voulue pour les images
+        #dimensions voulue pour les images
+        width = 500 
         height = 500
         self.image = self.image.resize((width, height))
         
     
     
     def rescale(self, x):
-        """
-        permet de mettre l'image a la taille voulue pour le canevas
+        """Permet de mettre l'image a la taille voulue pour le canevas
         
         Parameters
         ----------

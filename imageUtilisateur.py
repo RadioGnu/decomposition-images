@@ -58,7 +58,7 @@ class imageUtilisateur():
         return coordonnee
 
     def couleur_moyenne(self, facteur):
-        """Calclule les couleurs moyenne pour chaque carreaux
+        """Calcule les couleurs moyenne pour chaque carreaux
 
         Input:
             facteur: cf subdivision plus haut
@@ -95,7 +95,8 @@ class imageUtilisateur():
         return couleur_carreaux
 
 
-chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
-image = imageUtilisateur(chemin)
-m = image.couleur_moyenne(1)
-print(m)
+if __name__ == "__main___":
+    chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
+    image = imageUtilisateur(chemin)
+    m = image.couleur_moyenne(1)
+    print(m)
