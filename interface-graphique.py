@@ -8,7 +8,8 @@ Created on Wed Mar 15 14:29:33 2023
 from PIL import Image, ImageTk
 import tkinter as tk
 from tkinter import filedialog as fd
-from imageUtilisateur import imageUtilisateur 
+import imageUtilisateur as iu
+import main as f
 
 class interface:
 
@@ -17,14 +18,18 @@ class interface:
         self.racine = tk.Tk()
         self.racine.geometry("800x600")
         self.racine.title("DECOUPIMAGE 20000")
-        self.division = tk.DoubleVar()
+        self.division = tk.IntVar()
         self.slider=tk.Scale(self.racine, orient='horizontal', from_=1, to=100 ,resolution=1, length=200, variable = self.division, font=("Calibri", 8))
+        
         self.boutonlancer=tk.Button(self.racine, text="lancer")
         self.boutonlancer.bind('<Button-1>', self.lancer)
+        
         self.boutoncharger=tk.Button(self.racine, text="charger l'image")
         self.boutoncharger.bind('<Button-1>', self.charger)
+        
         self.boutongalerie=tk.Button(self.racine, text="changer de galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
+        
         self.creer_mosaique()
         self.creer_mignature()
         self.positionner()
@@ -52,20 +57,34 @@ class interface:
         self.boutongalerie.pack(side="bottom")
 
     def changer_galerie(self, event):
+        etiquette = tk.Label(self.racine, text="chargement...", bg = 'red')
+        etiquette.place(x = 250, y = 250, height=100, width=100)
+        
         chemin = fd.askdirectory()
+        self.galerie = f.dico_galerie(chemin)
+        
+        etiquette.destroy()
+        
         
     def lancer(self, event):
-        self.sertarrier=0
-
+        facteur = self.division.get()
+        carreauline = self.image_originale.couleur_moyenne(facteur)
+        
+        for coord, couleurs in carreauline.items() :
+            image = f.choix_image(couleurs, self.galerie)
+            image.rescale(600/facteur)
+            x, y = coord
+            self.carreau(image, x, y)
+        
         
     def charger(self,event):
         self.mignature.delete("all")
         chemin = fd.askopenfilename()
-        print(chemin)
-        self.image_originale = imageUtilisateur(chemin)
-        self.image_originale.image=self.image_originale.image.resize((200, 200))
+        self.image_originale = iu.imageUtilisateur(chemin)
+        self.image_mini = iu.imageUtilisateur(chemin)
+        self.image_mini.image=self.image_originale.image.resize((200, 200))
         
-        self.IM = ImageTk.PhotoImage(self.image_originale.image)
+        self.IM = ImageTk.PhotoImage(self.image_mini.image)
         self.mignature.create_image(0, 0, anchor = tk.NW, image = self.IM)
 
 # carreau : place la photo "image" en (x,y) 
@@ -73,15 +92,19 @@ class interface:
         im = Image.open(image)
         logo = ImageTk.PhotoImage(im, master=self.racine)
         self.mosaique.create_image(x, y, anchor = tk.NW, image = logo) #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
+    
+    
+                
 
 app=interface()
 app.racine.mainloop()
-        
-"""       
-image = Image.open("lenna.jpg") 
+
+"""     
+image = Image.open("gallerie/1.jpg") 
 photo = ImageTk.PhotoImage(image) 
- 
-canvas = Tk.Canvas(root, width = image.size[0], height = image.size[1]) 
-canvas.create_image(0,0, anchor = Tk.NW, image=photo)
+
+canvas = tk.Canvas(root, width = image.size[0], height = image.size[1]) 
+canvas.create_image(0,0, anchor = tk.NW, image=photo)
 canvas.pack() 
-root.mainloop()"""
+root.mainloop()
+"""
