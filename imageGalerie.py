@@ -85,7 +85,7 @@ class imageGalerie :
         
     
     
-    def rescale(self, coef):
+    def rescale(self, x):
         """
         permet de mettre l'image a la taille voulu pour le caneva
 
@@ -101,8 +101,8 @@ class imageGalerie :
 
         """
         
-        width = int(self.width * coef)
-        height = int(self.height * coef)
+        width = int(x)
+        height = int(x)
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
 

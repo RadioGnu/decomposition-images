@@ -89,7 +89,7 @@ def liste_image_proche(val_moyenne, dico_galerie):
         
     return couleur_proche
 
-def choix_image(liste_image):
+def choix_image(val_moyenne, dico_galerie):
     """
     Choix aléatoire de l'image parmis la liste des image de couleurs moyenne proche de celle de la subdivision
 
@@ -104,9 +104,13 @@ def choix_image(liste_image):
         DESCRIPTION.
 
     """
+    liste_image = liste_image_proche(val_moyenne, dico_galerie)
+    
     i = random.randint(0, len(liste_image)-1)
     image_finale = liste_image[i]
+    
     return image_finale
+
 
 
 

@@ -26,8 +26,10 @@ class imageUtilisateur():
         #Recherche de la dimension la plus faible length
         if self.width > self.height:
             length = self.height
+            self.width = self.height
         else:
             length = self.width
+            self.height = self.width
 
         #Boite de rognage
         boite = (0,0, length, length)
@@ -90,5 +92,10 @@ class imageUtilisateur():
 
             #On ajoute le couple coin, valeur moyenne
             couleur_carreaux[coord] = (rouge/count, vert/count, bleu/count)
+        return couleur_carreaux
 
 
+chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
+image = imageUtilisateur(chemin)
+m = image.couleur_moyenne(1)
+print(m)
