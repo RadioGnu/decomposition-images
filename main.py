@@ -155,7 +155,7 @@ def choix_image(val_moyenne, dico_galerie):
 
 #Tests
 if __name__ == "__main__":
-    dossier ="gallerie"
+    dossier ="galerie"
     dico = dico_galerie(dossier)
              
     val_moy = (110, 110, 110) 
