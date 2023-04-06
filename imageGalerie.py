@@ -1,26 +1,27 @@
-﻿"""Fichier contenant la definition de la classe permettant de crÃ©er les objet image a partir des photos de la galeries d'image"""
+"""Fichier contenant la definition de la classe permettant de creer les objets
+image a partir des photos de la galerie d'images"""
 
 import PIL.Image as PIL
 
 
-
 class imageGalerie :
-    def __init__(self, image):
-        """
-        initialisation de l'objet
+    def __init__(self, chemin):
+        """initialisation de l'objet
 
         Parameters
         ----------
-        image : chemin d'accès de l'image dans le gestionaire de fichier
-            DESCRIPTION.
+        chemin : chemin d'accès de l'image dans le gestionaire de fichier
 
         Returns
         -------
         None.
 
         """
-        self.image = PIL.open(image) #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
-        self.auto_rescale() #permet que toutes les images soient dans les dimensions voulues
+        self.chemin = chemin 
+        #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
+        self.image = PIL.open(chemin) 
+        #permet que toutes les images soient dans les dimensions voulues
+        self.auto_rescale()
         self.width = self.image.width
         self.height = self.image.height
         
@@ -87,13 +88,12 @@ class imageGalerie :
     
     def rescale(self, x):
         """
-        permet de mettre l'image a la taille voulu pour le caneva
-
-
+        permet de mettre l'image a la taille voulue pour le canevas
+        
         Parameters
         ----------
         coef : float
-            coefiscient de reduction de l'image.
+            coefficient de reduction de l'image.
 
         Returns
         -------
@@ -105,6 +105,3 @@ class imageGalerie :
         height = int(x)
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
-
-
-
