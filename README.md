@@ -5,15 +5,15 @@ moyenne de chaque carreau, et l'associe à une image choisie dans une galerie.
 Puis, il affiche les images choisies à la place des carreaux.
 
 # Lancer le programme
-Il faut d'abord installer les dépendences avec pip (et venv, c'est mieux):
+Il faut d'abord installer les dépendences avec pip:
+```
+pip -r requirements.txt
+```
 
-- PIL (python image library)
-
-Puis pour lancer le programme il suffit d'exécuter l'interface:
+Pour lancer le programme:
 ```
 python interface-graphique.py
 ```
-Si la version de python est claire.
 
-#Auteurs
+# Auteurs
 Emile CARRON, Coline DAMON, Paul GEORGES, Solenn MINGAT
