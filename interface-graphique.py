@@ -19,6 +19,8 @@ class interface:
         self.racine = tk.Tk()
         self.racine.geometry("800x600")
         self.racine.title("DECOUPIMAGE 20000")
+        self.liste_logo = []
+        
         self.division = tk.IntVar()
         self.slider=tk.Scale(self.racine, orient='horizontal', from_=1, to=100,
                              resolution=1, length=200, variable = self.division,
@@ -41,7 +43,8 @@ class interface:
         self.creer_mignature()
         self.positionner()
         self.choix_couleur()
-
+        
+     
 
     #petite photo : canvas pour afficher l'image d'origine
     def creer_mignature(self):
@@ -52,7 +55,10 @@ class interface:
     #Grande photo composée : canvas pour la grand photo,
     #qui se clear et se reforme pour la nouvelle photo quand on l'appelle.
     def creer_mosaique(self):
-        self.mosaique=tk.Canvas(self.racine, background="white",  height=600, width=600)
+        self.mosaique=tk.Canvas(self.racine, background="white", 
+                                height=600, width=600, 
+                                highlightthickness = 0,
+                                borderwidth = 0)
 
     
         
@@ -68,21 +74,24 @@ class interface:
         etiquette = tk.Label(self.racine, text="chargement...", bg = 'red')
         etiquette.place(x = 250, y = 250, height=100, width=100)
         
-        chemin = fd.askdirectory()
-        self.galerie = f.dico_galerie(chemin)
+        self.chemin_galerie = fd.askdirectory()
+        self.galerie = f.dico_galerie(self.chemin_galerie)
         
         etiquette.destroy()
         
         
     def lancer(self, event):
         facteur = self.division.get()
+        
         carreauline = self.image_originale.couleur_moyenne(facteur)
+        self.liste_logo = []
         
         for coord, couleurs in carreauline.items() :
             image = f.choix_image(couleurs, self.galerie)
-            image.rescale(600/facteur)
+            
+            image_mozaique = image.rescale(600/facteur)
             x, y = coord
-            self.carreau(image, x, y)
+            self.carreau(image_mozaique, x, y)
         
         
     def charger(self,event):
@@ -96,12 +105,13 @@ class interface:
         self.mignature.create_image(0, 0, anchor = tk.NW, image = self.IM)
 
 # carreau : place la photo "image" en (x,y) 
-    def carreau(self, image, x, y):
-        im = Image.open(image)
-        logo = ImageTk.PhotoImage(im, master=self.racine)
+    def carreau(self, im, x, y):
+        
+        self.logo = ImageTk.PhotoImage(image= im , master=self.racine)
+        self.liste_logo.append(self.logo)
         #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
-        self.mosaique.create_image(x, y, anchor = tk.NW, image = logo) 
-
+        self.mosaique.create_image(x, y, anchor = tk.NW, image = self.logo) 
+        
         
     def choix_couleur(self):
         pass

@@ -59,7 +59,7 @@ def serialiser(images_moyennes, dossier):
 
     Pour éviter de recalculer une fois que la galerie est mise en place.
     """
-    with open(dossier + '/' + 'valeur_moyenne.csv', 'w') as file:
+    with open(dossier + '/' + 'valeur_moyenne.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter = ',')
         for (image, val) in images_moyennes.values():
             #On met le chemin d'accès complet pour chaque image
@@ -76,6 +76,7 @@ def deserialiser(dossier):
         i = 0
         images_moyennes = {}
         for row in lecteur:
+
             #On lit simplement un chemin d'accès
             image = im.imageGalerie(row[0])
             #Convertit chaque élément en flottant
@@ -106,27 +107,34 @@ def liste_image_proche(val_moyenne, dico_galerie):
     
     couleur_proche = []
     #distance la plus élevée a l'image -> nécessairement des images plus proche
-    min_couleur = 3*(255**2) 
-    image_proche = None
+    ecart_min = [256, 256, 256]
+    
     for image, val in dico_galerie.values(): #parcours du dictionnaire
-        liste_pixel_select = [] #initialisation de la liste des écarts
-        somme = 0
+        RGB_proche = [] #initialisation de la liste des écarts
+        RGB_min = []
+
         for couleur in range(3):
             ecart_couleur = int(abs(val_moyenne[couleur]-val[couleur]))
-            somme += ecart_couleur**2
+            
             #ecart choisi pour avoir une couleur suffisamment proche
             if ecart_couleur <= 20: 
-                liste_pixel_select.append(ecart_couleur)
-                #il faut que les trois soit très proche
-                if len(liste_pixel_select)==3: 
-                    couleur_proche.append(image)
+                RGB_proche.append(ecart_couleur)
+           
+            if ecart_couleur <= ecart_min[couleur]  : 
+                RGB_min.append(ecart_couleur)
                 
-            elif somme < min_couleur : 
-                image_proche = image
-
+            
+        #il faut que les trois soit très proche
+        if len(RGB_proche)==3:
+            couleur_proche.append(image)
+        
+        elif len(RGB_min)==3: 
+            image_proche = image
+            ecart_min = RGB_min     
+        
         #si il n'y a pas d'image proche, choisir celle la plus proche
-        if len(couleur_proche) == 0: 
-            couleur_proche.append(image_proche) 
+    if len(couleur_proche) == 0: 
+        couleur_proche.append(image_proche) 
         
     return couleur_proche
 
@@ -146,7 +154,6 @@ def choix_image(val_moyenne, dico_galerie):
 
     """
     liste_image = liste_image_proche(val_moyenne, dico_galerie)
-    
     i = random.randint(0, len(liste_image)-1)
     image_finale = liste_image[i]
     
@@ -158,7 +165,7 @@ if __name__ == "__main__":
     dossier ="galerie"
     dico = dico_galerie(dossier)
              
-    val_moy = (110, 110, 110) 
+    val_moy = (255, 51, 204) 
     liste = liste_image_proche(val_moy, dico)
-    image_finale = choix_image(val_moy, dico)
-    image_finale.image.show()
+    for element in liste :
+        element.image.show()
