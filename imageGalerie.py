@@ -85,8 +85,8 @@ class imageGalerie :
 
         """
         #dimensions voulue pour les images
-        width = 500 
-        height = 500
+        width = 600 
+        height = 600
         self.image = self.image.resize((width, height))
         
     
@@ -105,7 +105,8 @@ class imageGalerie :
 
         """
         
-        width = int(x)
-        height = int(x)
+        # +1 pour eviter davoir des trous dans la grille => arondi au dessus plutot que au dessous
+        width = int(x)+1
+        height = int(x)+1
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
