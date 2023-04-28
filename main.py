@@ -29,27 +29,31 @@ def dico_galerie(dossier):
     """
    
     
-    if os.path.isfile(dossier + '/' + "valeur_moyenne.csv"):
-        images_moyennes = deserialiser(dossier)
-
-    else:
-        liste_images = [f for f in os.listdir(dossier) 
-                        if f != "valeur_moyenne.csv"]
-
+    liste_images = [f for f in os.listdir(dossier)]
+    try:
+        id_valeur_moyenne = liste_images.index("valeur_moyenne.csv")
+    except ValueError:
+        id_valeur_moyenne = -1
+    if id_valeur_moyenne == -1:
         images_moyennes = {} #initialisation du dictionnaire
-        for i in range(len(liste_images)) :
-            if i not in images_moyennes :
-                #pour retrouver les images à coup sûr dans les fichiers
-                #-> chemin d'accès complet
-                acces = dossier + "/" + liste_images[i] 
-                #création de l'objet image a partir du chemin d'accès
-                image = im.imageGalerie(acces)  
-                #utilisation de la méthode couleur moyenne de la classe imageGalerie
-                val = image.couleur_moyenne() 
-                images_moyennes[i] = image, val 
-                
-        serialiser(images_moyennes, dossier)
+    else:
+        images_moyennes, images_enregistrees = deserialiser(dossier)
+        liste_images.pop(id_valeur_moyenne)
+
+    for i in range(len(liste_images)) :
+        image = liste_images[i]
+        acces = dossier + "/" + image 
+        if acces not in images_enregistrees:
+            #pour retrouver les images à coup sûr dans les fichiers
+            #-> chemin d'accès complet
+            #création de l'objet image a partir du chemin d'accès
+            imageGal = im.imageGalerie(acces)  
+            #utilisation de la méthode couleur moyenne de la classe imageGalerie
+            val = imageGal.couleur_moyenne() 
+            images_moyennes[i] = imageGal, val 
             
+    serialiser(images_moyennes, dossier)
+        
     return images_moyennes 
       
 
@@ -74,17 +78,20 @@ def deserialiser(dossier):
     with open(dossier + '/' + 'valeur_moyenne.csv', 'r') as file:
         lecteur = csv.reader(file, delimiter=',')
         i = 0
+        liste_images = []
         images_moyennes = {}
         for row in lecteur:
 
             #On lit simplement un chemin d'accès
             image = im.imageGalerie(row[0])
+            #et on ajoute à liste_images
+            liste_images.append(row[0])
             #Convertit chaque élément en flottant
             moyenne = tuple(map(float, row[1:]))
             images_moyennes[i] = image, moyenne
             i += 1
 
-    return images_moyennes
+    return images_moyennes, liste_images
     
    
 def liste_image_proche(val_moyenne, dico_galerie):
