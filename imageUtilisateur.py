@@ -7,13 +7,15 @@ class imageUtilisateur():
         Input:
             chemin_acces: le chemin d'acces relatif ou absolu vers l'image
         """
-        self.image = Image.open(chemin_acces)
+        self.chemin_acces = chemin_acces
+        self.image = Image.open(self.chemin_acces)
+        self.auto_rescale()
         self.width = self.image.width
         self.height = self.image.height
         self.square_crop()
 
     def __str__(self):
-        pass
+        return f"{self.chemin_acces}"
     
     def __pass__(self):
         pass
@@ -36,7 +38,7 @@ class imageUtilisateur():
         self.image = self.image.crop(boite)
 
 
-    def subdivision(self, facteur:int):
+    def subdivision(self, facteur):
         """Divise l'image en carré répartis tous les largeur/facteur
 
         Input:
@@ -66,6 +68,8 @@ class imageUtilisateur():
             dictionnaire coordonnee
             clef: coin nord-ouest du carreau
             valeurs: couleur moyenne du carreau
+            
+        TO DO : CHANGER LE NOM PARTOUT
         """
 
         coordonnee = self.subdivision(facteur)
@@ -93,6 +97,20 @@ class imageUtilisateur():
             #On ajoute le couple coin, valeur moyenne
             couleur_carreaux[coord] = (rouge/count, vert/count, bleu/count)
         return couleur_carreaux
+    
+    def auto_rescale(self):
+        """Distord et rétrécit l'image pour en faire un carré de 500*500, 
+        taille maximale où elle sera affichée sur le canevas.
+        
+        Returns
+        -------
+        None.
+
+        """
+        #dimensions voulue pour les images
+        width = 600 
+        height = 600
+        self.image = self.image.resize((width, height))
 
 
 if __name__ == "__main___":
