@@ -10,7 +10,7 @@ https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-e
 
 On peut ensuite installer les dépendances avec pip:
 ```
-pip -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Pour lancer le programme:
