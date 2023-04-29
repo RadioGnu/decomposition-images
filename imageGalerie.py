@@ -2,6 +2,7 @@
 image a partir des photos de la galerie d'images"""
 
 import PIL.Image as PIL
+import time as t
 
 
 class imageGalerie :
@@ -72,7 +73,9 @@ class imageGalerie :
         
         self.moyenne = (mr, mv, mb)
         #permet d'acceder à la valeur lorsque la fonction est appelée
-        return self.moyenne 
+        return self.moyenne
+         
+    
     
     
     def auto_rescale(self):
@@ -110,3 +113,7 @@ class imageGalerie :
         height = int(x)+1
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
+
+
+
+
