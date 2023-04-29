@@ -97,7 +97,6 @@ def deserialiser(dossier, liste_images):
                 i += 1
 
     return images_moyennes, images_enregistrees 
-    
    
 def liste_image_proche(val_moyenne, dico_galerie):
     """Associe à la valeur moyenne de chaque subdivision de l'image initiale 
