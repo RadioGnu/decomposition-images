@@ -5,15 +5,18 @@ moyenne de chaque carreau, et l'associe à une image choisie dans une galerie.
 Puis, il affiche les images choisies à la place des carreaux.
 
 # Lancer le programme
-Il faut d'abord installer les dépendences avec pip (et venv, c'est mieux):
+Nous vous conseillons d'utiliser venv, comme expliqué sur le site suivant :
+https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment.
 
-- PIL (python image library)
-
-Puis pour lancer le programme il suffit d'exécuter l'interface:
+On peut ensuite installer les dépendances avec pip:
 ```
-python interface-graphique.py
+pip -r requirements.txt
 ```
-Si la version de python est claire.
 
-#Auteurs
+Pour lancer le programme:
+```
+python src/interface-graphique.py
+```
+
+# Auteurs
 Emile CARRON, Coline DAMON, Paul GEORGES, Solenn MINGAT
