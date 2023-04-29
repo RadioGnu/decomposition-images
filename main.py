@@ -29,27 +29,32 @@ def dico_galerie(dossier):
     """
    
     
-    if os.path.isfile(dossier + '/' + "valeur_moyenne.csv"):
-        images_moyennes = deserialiser(dossier)
-
-    else:
-        liste_images = [f for f in os.listdir(dossier) 
-                        if f != "valeur_moyenne.csv"]
-
+    liste_images = os.listdir(dossier)
+    try:
+        id_valeur_moyenne = liste_images.index("valeur_moyenne.csv")
+    except ValueError:
+        id_valeur_moyenne = -1
+    if id_valeur_moyenne == -1:
         images_moyennes = {} #initialisation du dictionnaire
-        for i in range(len(liste_images)) :
-            if i not in images_moyennes :
-                #pour retrouver les images à coup sûr dans les fichiers
-                #-> chemin d'accès complet
-                acces = dossier + "/" + liste_images[i] 
-                #création de l'objet image a partir du chemin d'accès
-                image = im.imageGalerie(acces)  
-                #utilisation de la méthode couleur moyenne de la classe imageGalerie
-                val = image.couleur_moyenne() 
-                images_moyennes[i] = image, val 
-                
-        serialiser(images_moyennes, dossier)
+        images_enregistrees = [] #pas d'images enregistrees
+    else:
+        images_moyennes, images_enregistrees = deserialiser(dossier, liste_images)
+        liste_images.pop(id_valeur_moyenne)
+
+    for i in range(len(liste_images)) :
+        image = liste_images[i]
+        acces = dossier + "/" + image 
+        if acces not in images_enregistrees:
+            #pour retrouver les images à coup sûr dans les fichiers
+            #-> chemin d'accès complet
+            #création de l'objet image a partir du chemin d'accès
+            imageGal = im.imageGalerie(acces)  
+            #utilisation de la méthode couleur moyenne de la classe imageGalerie
+            val = imageGal.couleur_moyenne() 
+            images_moyennes[i] = imageGal, val 
             
+    serialiser(images_moyennes, dossier)
+        
     return images_moyennes 
       
 
@@ -58,34 +63,40 @@ def serialiser(images_moyennes, dossier):
     dans un fichier texte contenu dans le fichier de la galerie.
 
     Pour éviter de recalculer une fois que la galerie est mise en place.
+    Réécrit le fichier à chaque fois (mais ça ne prend que 3 ms)
     """
     with open(dossier + '/' + 'valeur_moyenne.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter = ',')
         for (image, val) in images_moyennes.values():
             #On met le chemin d'accès complet pour chaque image
-            chemin = image.chemin 
+            chemin = image.chemin
+            nom = chemin.replace(dossier +'/', '')
             #On concatène le tuple des valeurs moyennes avec acces
-            writer.writerow((chemin,) + val)
+            writer.writerow((nom,) + val)
 
-def deserialiser(dossier):
+def deserialiser(dossier, liste_images):
     """Trouve le dico galerie à partir du fichier texte
     """
 
     with open(dossier + '/' + 'valeur_moyenne.csv', 'r') as file:
         lecteur = csv.reader(file, delimiter=',')
         i = 0
+        images_enregistrees = []
         images_moyennes = {}
         for row in lecteur:
+            nom = row[0]
+            if nom in liste_images:
+                #On lit simplement un chemin d'accès
+                chemin = dossier + '/' + nom 
+                image = im.imageGalerie(chemin)
+                #et on ajoute à liste_images
+                images_enregistrees.append(chemin)
+                #Convertit chaque élément en flottant
+                moyenne = tuple(map(float, row[1:]))
+                images_moyennes[i] = image, moyenne
+                i += 1
 
-            #On lit simplement un chemin d'accès
-            image = im.imageGalerie(row[0])
-            #Convertit chaque élément en flottant
-            moyenne = tuple(map(float, row[1:]))
-            images_moyennes[i] = image, moyenne
-            i += 1
-
-    return images_moyennes
-    
+    return images_moyennes, images_enregistrees 
    
 def liste_image_proche(val_moyenne, dico_galerie):
     """Associe à la valeur moyenne de chaque subdivision de l'image initiale 
@@ -170,7 +181,5 @@ if __name__ == "__main__":
     liste = liste_image_proche(val_moy, dico)
     for element in liste :
         element.image.show()
-"""
-def rgb_to_hex(r, g, b):
-    return '#{:02x}{:02x}{:02x}'.format(r, g, b)
-
+#def rgb_to_hex(r, g, b):
+    #return '#{:02x}{:02x}{:02x}'.format(r, g, b)
