@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import Image
 
+
 class imageUtilisateur():
     def __init__(self, chemin_acces: str):
         """Initialisation de la classe
@@ -19,6 +20,38 @@ class imageUtilisateur():
     
     def __pass__(self):
         pass
+    
+    def couleur_moyenne(self):
+        """Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
+
+        Returns self.moyenn
+        -------
+        TYPE : tuple 
+        tuple des trois moyenne de couleurs.
+
+        """
+        
+        #initialisation
+        rouge = 0 
+        vert = 0
+        bleu = 0
+        #parcours par pixel
+        for i in range (self.width):
+            for j in range(self.height):
+                #retourne un tuple RGB du pixel de position (i, j)
+                RGB = self.image.getpixel((i,j)) 
+                rouge += RGB[0]
+                vert += RGB[1]
+                bleu += RGB[2]
+            
+        #calcul des moyennes
+        taille = self.width * self.height
+        mr = rouge/taille
+        mv = vert/taille
+        mb = bleu/taille
+        
+        self.moyenne_hexa = '#{:02x}{:02x}{:02x}'.format(int(mr), int(mv), int(mb))
+        return self.moyenne_hexa
 
     def square_crop(self):
         """Rogne l'image self.image selon sa dimension la plus faible en carré
@@ -59,7 +92,7 @@ class imageUtilisateur():
         
         return coordonnee
 
-    def couleur_moyenne(self, facteur):
+    def couleur_carreaux(self, facteur):
         """Calcule les couleurs moyenne pour chaque carreaux
 
         Input:

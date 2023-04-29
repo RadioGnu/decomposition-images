@@ -8,8 +8,8 @@ Created on Wed Mar 15 14:29:33 2023
 from PIL import Image, ImageTk
 import tkinter as tk
 from tkinter import filedialog as fd
-import imageUtilisateur as iu
 import main as f
+import imageUtilisateur as iu
 
 class interface:
 
@@ -22,7 +22,7 @@ class interface:
         self.liste_logo = []
         
         self.division = tk.IntVar()
-        self.slider=tk.Scale(self.racine, orient='horizontal', from_=1, to=100,
+        self.slider=tk.Scale(self.racine, orient='horizontal', from_=20, to=70,
                              resolution=1, length=200, variable = self.division,
                              font=("Calibri", 8))
         
@@ -32,7 +32,7 @@ class interface:
         self.boutoncharger=tk.Button(self.racine, text="charger l'image")
         self.boutoncharger.bind('<Button-1>', self.charger)
         
-        self.boutongalerie=tk.Button(self.racine, text="changer de galerie")
+        self.boutongalerie=tk.Button(self.racine, text="charger la galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
 
         self.boutoncouleur = tk.Checkbutton(self.racine, text="couleur")
@@ -50,6 +50,7 @@ class interface:
     def creer_mignature(self):
         self.mignature=tk.Canvas(self.racine, background="white", height=200, width=200)
         #self.mignature.create_image(0,0, anchor = tk.NW, image=self.photo)
+        
         
         
     #Grande photo composée : canvas pour la grand photo,
@@ -83,7 +84,7 @@ class interface:
     def lancer(self, event):
         facteur = self.division.get()
         
-        carreauline = self.image_originale.couleur_moyenne(facteur)
+        carreauline = self.image_originale.couleur_carreaux(facteur)
         self.liste_logo = []
         
         for coord, couleurs in carreauline.items() :
@@ -92,6 +93,17 @@ class interface:
             image_mozaique = image.rescale(600/facteur)
             x, y = coord
             self.carreau(image_mozaique, x, y)
+    
+    def adapter_couleurs(self):
+        couleur = self.image_originale.couleur_moyenne()
+        self.boutonlancer.config(bg = couleur)
+        self.boutonlancer.pack()
+        self.boutoncharger.config(bg = couleur)
+        self.boutoncharger.pack()
+        self.boutongalerie.config(bg = couleur)
+        self.boutongalerie.pack()
+        self.slider.config(troughcolor = couleur)
+        self.slider.pack()
         
         
     def charger(self,event):
@@ -103,6 +115,8 @@ class interface:
         
         self.IM = ImageTk.PhotoImage(self.image_mini.image)
         self.mignature.create_image(0, 0, anchor = tk.NW, image = self.IM)
+        self.adapter_couleurs()
+        
 
 # carreau : place la photo "image" en (x,y) 
     def carreau(self, im, x, y):

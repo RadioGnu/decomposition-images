@@ -161,6 +161,7 @@ def choix_image(val_moyenne, dico_galerie):
 
 
 #Tests
+"""
 if __name__ == "__main__":
     dossier ="galerie"
     dico = dico_galerie(dossier)
@@ -169,3 +170,7 @@ if __name__ == "__main__":
     liste = liste_image_proche(val_moy, dico)
     for element in liste :
         element.image.show()
+"""
+def rgb_to_hex(r, g, b):
+    return '#{:02x}{:02x}{:02x}'.format(r, g, b)
+
