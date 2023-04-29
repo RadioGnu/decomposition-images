@@ -2,7 +2,7 @@
 image a partir des photos de la galerie d'images"""
 
 import PIL.Image as PIL
-
+import numpy as np
 
 class imageGalerie :
     def __init__(self, chemin):
@@ -55,23 +55,8 @@ class imageGalerie :
         """
         
         self.liste_RGB()
-        #initialisation
-        rouge = 0 
-        vert = 0
-        bleu = 0
-        #parcours de la liste de pixel
-        for RGB in self.couleur: 
-            rouge += RGB[0]
-            vert += RGB[1]
-            bleu += RGB[2]
-        
-        #calcul des moyennes
-        mr = rouge/len(self.couleur) 
-        mv = vert/len(self.couleur)
-        mb = bleu/len(self.couleur)
-        
-        self.moyenne = (mr, mv, mb)
-        #permet d'acceder à la valeur lorsque la fonction est appelée
+        self.moyenne = tuple(sum(self.image.getdata(band))/len(self.image.getdata(band)) 
+                        for band in range(3))
         return self.moyenne 
     
     
