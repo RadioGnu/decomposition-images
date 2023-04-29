@@ -29,15 +29,16 @@ def dico_galerie(dossier):
     """
    
     
-    liste_images = [f for f in os.listdir(dossier)]
+    liste_images = os.listdir(dossier)
     try:
         id_valeur_moyenne = liste_images.index("valeur_moyenne.csv")
     except ValueError:
         id_valeur_moyenne = -1
     if id_valeur_moyenne == -1:
         images_moyennes = {} #initialisation du dictionnaire
+        images_enregistrees = [] #pas d'images enregistrees
     else:
-        images_moyennes, images_enregistrees = deserialiser(dossier)
+        images_moyennes, images_enregistrees = deserialiser(dossier, liste_images)
         liste_images.pop(id_valeur_moyenne)
 
     for i in range(len(liste_images)) :
@@ -62,36 +63,40 @@ def serialiser(images_moyennes, dossier):
     dans un fichier texte contenu dans le fichier de la galerie.
 
     Pour éviter de recalculer une fois que la galerie est mise en place.
+    Réécrit le fichier à chaque fois (mais ça ne prend que 3 ms)
     """
     with open(dossier + '/' + 'valeur_moyenne.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter = ',')
         for (image, val) in images_moyennes.values():
             #On met le chemin d'accès complet pour chaque image
-            chemin = image.chemin 
+            chemin = image.chemin
+            nom = chemin.replace(dossier +'/', '')
             #On concatène le tuple des valeurs moyennes avec acces
-            writer.writerow((chemin,) + val)
+            writer.writerow((nom,) + val)
 
-def deserialiser(dossier):
+def deserialiser(dossier, liste_images):
     """Trouve le dico galerie à partir du fichier texte
     """
 
     with open(dossier + '/' + 'valeur_moyenne.csv', 'r') as file:
         lecteur = csv.reader(file, delimiter=',')
         i = 0
-        liste_images = []
+        images_enregistrees = []
         images_moyennes = {}
         for row in lecteur:
+            nom = row[0]
+            if nom in liste_images:
+                #On lit simplement un chemin d'accès
+                chemin = dossier + '/' + nom 
+                image = im.imageGalerie(chemin)
+                #et on ajoute à liste_images
+                images_enregistrees.append(chemin)
+                #Convertit chaque élément en flottant
+                moyenne = tuple(map(float, row[1:]))
+                images_moyennes[i] = image, moyenne
+                i += 1
 
-            #On lit simplement un chemin d'accès
-            image = im.imageGalerie(row[0])
-            #et on ajoute à liste_images
-            liste_images.append(row[0])
-            #Convertit chaque élément en flottant
-            moyenne = tuple(map(float, row[1:]))
-            images_moyennes[i] = image, moyenne
-            i += 1
-
-    return images_moyennes, liste_images
+    return images_moyennes, images_enregistrees 
     
    
 def liste_image_proche(val_moyenne, dico_galerie):
