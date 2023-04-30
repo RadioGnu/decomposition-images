@@ -22,6 +22,7 @@ class interface:
         self.liste_logo = []
         
         self.division = tk.IntVar()
+        # de 20 a 70 parce que spider plante après 70*70 carreau, et que l'image ne ressemble a rien avant 20*20
         self.slider=tk.Scale(self.racine, orient='horizontal', from_=20, to=70,
                              resolution=1, length=200, variable = self.division,
                              font=("Calibri", 8))
