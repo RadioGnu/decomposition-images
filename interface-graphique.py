@@ -89,7 +89,7 @@ class interface:
         #Si l'utilisateur annule, le chemin renvoyé fait partie
         #de la liste dans le test
         if self.chemin_galerie in [(), '']:
-            pass #do something to tell user is empty
+            self.prevenir_annuler()
         else:
             self.galerie = f.dico_galerie(self.chemin_galerie)
         
@@ -103,7 +103,7 @@ class interface:
         #Si l'utilisateur annule, le chemin renvoyé fait partie
         #de la liste dans le test
         if chemin in ['', ()]:
-            pass #do something to tell user is empty
+            self.prevenir_annuler()
         else:
             self.miniature.delete("all")
             self.image_originale = iu.imageUtilisateur(chemin)
@@ -127,6 +127,16 @@ class interface:
         self.boutongalerie.pack()
         self.slider.config(troughcolor = couleur)
         self.slider.pack()
+
+    def prevenir_annuler(self):
+        """Prévient l'utlisateur qu'il a annulé la sélection
+        d'une image
+        """
+        self.message = tk.messagebox.showwarning(title="Annulation",
+                                message="Vous avez annulé votre sélection,"
+                                        +"pas de nouvelle image chargée."
+                                                 )
+
         
     #Découpage de l'image en la mosaïque
     def lancer(self, event):
