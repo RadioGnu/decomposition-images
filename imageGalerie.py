@@ -2,8 +2,6 @@
 image a partir des photos de la galerie d'images"""
 
 import PIL.Image as PIL
-import time as t
-
 
 class imageGalerie :
     def __init__(self, chemin):
@@ -30,8 +28,7 @@ class imageGalerie :
         
     def liste_RGB(self):
         """Création d'une liste contenant les tuples des valeurs 
-        en rouge, vert et bleu pour chaque pixel de l'image.
-        
+        en rouge, vert et bleu pour chaque pixel de l'image.        
 
         Returns
         -------
@@ -52,7 +49,6 @@ class imageGalerie :
         -------
         TYPE : tuple 
         tuple des trois moyenne de couleurs.
-
         """
         
         self.liste_RGB()
@@ -74,9 +70,6 @@ class imageGalerie :
         self.moyenne = (mr, mv, mb)
         #permet d'acceder à la valeur lorsque la fonction est appelée
         return self.moyenne
-         
-    
-    
     
     def auto_rescale(self):
         """Distord et rétrécit l'image pour en faire un carré de 500*500, 
@@ -92,28 +85,21 @@ class imageGalerie :
         height = 600
         self.image = self.image.resize((width, height))
         
-    
-    
-    def rescale(self, x):
+    def rescale(self, cote):
         """Permet de mettre l'image a la taille voulue pour le canevas
         
         Parameters
         ----------
-        coef : float
-            coefficient de reduction de l'image.
+        cote : float
+            Taille de l'image finale (carrée)
 
         Returns
         -------
         rescaled_image : image (jpeg, png ... en fonction de l'image d'origine)
-
         """
         
         # +1 pour eviter davoir des trous dans la grille => arondi au dessus plutot que au dessous
-        width = int(x)+1
-        height = int(x)+1
+        width = int(cote)+1
+        height = int(cote)+1
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
-
-
-
-
