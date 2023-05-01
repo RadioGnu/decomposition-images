@@ -4,7 +4,8 @@ from PIL import Image
 
 class imageUtilisateur():
     def __init__(self, chemin_acces: str):
-        """Initialisation de la classe
+        """
+        Initialisation de la classe
         Input:
             chemin_acces: le chemin d'acces relatif ou absolu vers l'image
         """
@@ -22,7 +23,8 @@ class imageUtilisateur():
         pass
     
     def couleur_moyenne(self):
-        """Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
+        """
+        Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
 
         Returns self.moyenn
         -------
@@ -50,11 +52,13 @@ class imageUtilisateur():
         mv = vert/taille
         mb = bleu/taille
         
-        self.moyenne_hexa = '#{:02x}{:02x}{:02x}'.format(int(mr), int(mv), int(mb))
+        self.moyenne_hexa = "#{:02x}{:02x}{:02x}".format(int(mr), int(mv), int(mb))
+    
         return self.moyenne_hexa
 
     def square_crop(self):
-        """Rogne l'image self.image selon sa dimension la plus faible en carré
+        """
+        Rogne l'image self.image selon sa dimension la plus faible en carré
 
         On obtient donc une image carree (facilement decoupable)
         """
@@ -72,7 +76,8 @@ class imageUtilisateur():
 
 
     def subdivision(self, facteur):
-        """Divise l'image en carré répartis tous les largeur/facteur
+        """
+        Divise l'image en carré répartis tous les largeur/facteur
 
         Input:
             facteur: nombre de sous-division de la longeur,
@@ -102,7 +107,7 @@ class imageUtilisateur():
             clef: coin nord-ouest du carreau
             valeurs: couleur moyenne du carreau
             
-        TO DO : CHANGER LE NOM PARTOUT
+    
         """
 
         coordonnee = self.subdivision(facteur)
@@ -132,7 +137,8 @@ class imageUtilisateur():
         return couleur_carreaux
     
     def auto_rescale(self):
-        """Distord et rétrécit l'image pour en faire un carré de 500*500, 
+        """
+        Distord et rétrécit l'image pour en faire un carré de 500*500, 
         taille maximale où elle sera affichée sur le canevas.
         
         Returns
@@ -145,9 +151,11 @@ class imageUtilisateur():
         height = 600
         self.image = self.image.resize((width, height))
 
-
+"""
+#test
 if __name__ == "__main___":
     chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
     image = imageUtilisateur(chemin)
     m = image.couleur_moyenne(1)
     print(m)
+"""

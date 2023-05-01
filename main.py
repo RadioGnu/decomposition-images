@@ -128,7 +128,7 @@ def liste_image_proche(val_moyenne, dico_galerie):
             ecart_couleur = int(abs(val_moyenne[couleur]-val[couleur]))
             
             #ecart choisi pour avoir une couleur suffisamment proche
-            if ecart_couleur <= 20: 
+            if ecart_couleur <= 30: 
                 RGB_proche.append(ecart_couleur)
            
             if ecart_couleur <= ecart_min[couleur]  : 
@@ -183,3 +183,4 @@ if __name__ == "__main__":
         element.image.show()
 #def rgb_to_hex(r, g, b):
     #return '#{:02x}{:02x}{:02x}'.format(r, g, b)
+"""

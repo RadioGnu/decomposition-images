@@ -18,11 +18,11 @@ class interface:
     def __init__(self):
         self.racine = tk.Tk()
         self.racine.geometry("800x600")
-        self.racine.title("DECOUPIMAGE 20000")
+        self.racine.title("DECOUPIMAGE 2000")
         self.liste_logo = []
         
         self.division = tk.IntVar()
-        self.slider=tk.Scale(self.racine, orient='horizontal', from_=20, to=70,
+        self.slider=tk.Scale(self.racine, orient="horizontal", from_=20, to=70,
                              resolution=1, length=200, variable = self.division,
                              font=("Calibri", 8))
         
@@ -64,6 +64,7 @@ class interface:
     
         
     def positionner(self):
+        #positionne chaque widget sur la fennetre
         self.mosaique.pack(side="left")
         self.mignature.pack(side="top")
         self.slider.pack(side="top")
@@ -72,6 +73,7 @@ class interface:
         self.boutongalerie.pack(side="bottom")
 
     def changer_galerie(self, event):
+        #permet de charger la galerie en debut d'utilisation
         etiquette = tk.Label(self.racine, text="chargement...", bg = 'red')
         etiquette.place(x = 250, y = 250, height=100, width=100)
         
@@ -82,6 +84,7 @@ class interface:
         
         
     def lancer(self, event):
+        #lance le decoupage de l'image et le positionnement des carreaux
         facteur = self.division.get()
         
         carreauline = self.image_originale.couleur_carreaux(facteur)
@@ -95,6 +98,7 @@ class interface:
             self.carreau(image_mozaique, x, y)
     
     def adapter_couleurs(self):
+        #adapte la couleur des boutons a l'image choisie
         couleur = self.image_originale.couleur_moyenne()
         self.boutonlancer.config(bg = couleur)
         self.boutonlancer.pack()
@@ -107,6 +111,7 @@ class interface:
         
         
     def charger(self,event):
+        #chargement de l'image a decouper et positionnement sur la miniature
         self.mignature.delete("all")
         chemin = fd.askopenfilename()
         self.image_originale = iu.imageUtilisateur(chemin)
@@ -133,7 +138,7 @@ class interface:
 app=interface()
 app.racine.mainloop()
 
-"""     
+""" 
 image = Image.open("gallerie/1.jpg") 
 photo = ImageTk.PhotoImage(image) 
 

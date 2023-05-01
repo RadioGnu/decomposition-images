@@ -7,7 +7,8 @@ import time as t
 
 class imageGalerie :
     def __init__(self, chemin):
-        """initialisation de l'objet
+        """
+        initialisation de l'objet
 
         Parameters
         ----------
