@@ -54,10 +54,26 @@ class imageGalerie :
 
         """
         
-        self.liste_RGB()
         self.moyenne = tuple(sum(self.image.getdata(band))/len(self.image.getdata(band)) 
                         for band in range(3))
         return self.moyenne 
+
+    def couleur_moyenne_old(self):
+        self.liste_RGB()
+        rouge = 0
+        vert = 0
+        bleu = 0
+        count = 0
+        for (r,g,b) in self.couleur:
+            count +=1
+            rouge += r
+            vert += g
+            bleu += b
+
+        return (rouge/count, vert/count, bleu/count)
+
+
+
     
     
     def auto_rescale(self):
