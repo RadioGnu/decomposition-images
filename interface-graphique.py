@@ -68,12 +68,8 @@ class interface:
                                 borderwidth = 0)
         
     def positionner(self):
-<<<<<<< HEAD
-        #positionne chaque widget sur la fennetre
-=======
         """Positionne tous les widgets de la fenêtre
         """
->>>>>>> main
         self.mosaique.pack(side="left")
         self.miniature.pack(side="top")
         self.slider.pack(side="top")
@@ -83,13 +79,9 @@ class interface:
 
     #Chargements de la galerie et de l'image de l'utilisateur
     def changer_galerie(self, event):
-<<<<<<< HEAD
-        #permet de charger la galerie en debut d'utilisation
-=======
         """Charge une galerie stocké dans le dossier demandé 
         par l'utilisateur.
         """
->>>>>>> main
         etiquette = tk.Label(self.racine, text="chargement...", bg = 'red')
         etiquette.place(x = 250, y = 250, height=100, width=100)
         
@@ -148,13 +140,9 @@ class interface:
         
     #Découpage de l'image en la mosaïque
     def lancer(self, event):
-<<<<<<< HEAD
-        #lance le decoupage de l'image et le positionnement des carreaux
-=======
         """Lance le programme de création de la mosaïque à partir
         de l'image de l'utilisateur.
         """
->>>>>>> main
         facteur = self.division.get()
         
         carreauline = self.image_originale.couleur_carreaux(facteur)
@@ -166,37 +154,8 @@ class interface:
             image_mozaique = image.rescale(600/facteur)
             x, y = coord
             self.carreau(image_mozaique, x, y)
-    
-<<<<<<< HEAD
-    def adapter_couleurs(self):
-        #adapte la couleur des boutons a l'image choisie
-        couleur = self.image_originale.couleur_moyenne()
-        self.boutonlancer.config(bg = couleur)
-        self.boutonlancer.pack()
-        self.boutoncharger.config(bg = couleur)
-        self.boutoncharger.pack()
-        self.boutongalerie.config(bg = couleur)
-        self.boutongalerie.pack()
-        self.slider.config(troughcolor = couleur)
-        self.slider.pack()
-        
-        
-    def charger(self,event):
-        #chargement de l'image a decouper et positionnement sur la miniature
-        self.mignature.delete("all")
-        chemin = fd.askopenfilename()
-        self.image_originale = iu.imageUtilisateur(chemin)
-        self.image_mini = iu.imageUtilisateur(chemin)
-        self.image_mini.image=self.image_originale.image.resize((200, 200))
-        
-        self.IM = ImageTk.PhotoImage(self.image_mini.image)
-        self.mignature.create_image(0, 0, anchor = tk.NW, image = self.IM)
-        self.adapter_couleurs()
         
 
-# carreau : place la photo "image" en (x,y) 
-=======
->>>>>>> main
     def carreau(self, im, x, y):
         """Place la photo "im" en (x,y)
 
