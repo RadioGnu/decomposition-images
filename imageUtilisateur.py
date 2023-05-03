@@ -4,9 +4,10 @@ from PIL import Image
 
 class imageUtilisateur():
     def __init__(self, chemin_acces: str):
-        """
-        Initialisation de la classe
-        Input:
+        """Initialisation de la classe
+
+        Paramaters
+        ----------
             chemin_acces: le chemin d'acces relatif ou absolu vers l'image
         """
         self.chemin_acces = chemin_acces
@@ -14,14 +15,23 @@ class imageUtilisateur():
         self.auto_rescale()
         self.width = self.image.width
         self.height = self.image.height
-        self.square_crop()
 
     def __str__(self):
         return f"{self.chemin_acces}"
     
-    def __pass__(self):
-        pass
-    
+    def auto_rescale(self):
+        """Distord et rétrécit l'image pour en faire un carré de 500*500, 
+        taille maximale où elle sera affichée sur le canevas.
+        
+        Returns
+        -------
+        None.
+        """
+        #dimensions voulue pour les images
+        width = 600 
+        height = 600
+        self.image = self.image.resize((width, height))
+
     def couleur_moyenne(self):
         """
         Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
@@ -56,35 +66,19 @@ class imageUtilisateur():
     
         return self.moyenne_hexa
 
-    def square_crop(self):
-        """
-        Rogne l'image self.image selon sa dimension la plus faible en carré
-
-        On obtient donc une image carree (facilement decoupable)
-        """
-        #Recherche de la dimension la plus faible length
-        if self.width > self.height:
-            length = self.height
-            self.width = self.height
-        else:
-            length = self.width
-            self.height = self.width
-
-        #Boite de rognage
-        boite = (0,0, length, length)
-        self.image = self.image.crop(boite)
-
-
     def subdivision(self, facteur):
         """
         Divise l'image en carré répartis tous les largeur/facteur
 
-        Input:
-            facteur: nombre de sous-division de la longeur,
+        Parameters
+        ----------
+        facteur: nombre de sous-division de la longeur,
             au carré le nombre de carreaux
-        Output:
-            liste coordonnee
-            element = coin nord-ouest des carreaux
+
+        Returns coordonnee
+        -------
+        Type: list 
+        element: coordonnes du coin nord-ouest des carreaux
         """
         #On echantillone la longueur
         intervalle = [n* self.width/facteur for n in range(facteur)]
@@ -100,14 +94,16 @@ class imageUtilisateur():
     def couleur_carreaux(self, facteur):
         """Calcule les couleurs moyenne pour chaque carreaux
 
-        Input:
+        Parameters
+        ----------
             facteur: cf subdivision plus haut
-        Output:
-            dictionnaire coordonnee
-            clef: coin nord-ouest du carreau
-            valeurs: couleur moyenne du carreau
+
+        Returns coordonnee
+        -------
+            Type: dict
+            clef: coordonnee du coin nord-ouest du carreau
+            valeur: couleur moyenne du carreau
             
-    
         """
 
         coordonnee = self.subdivision(facteur)
@@ -135,21 +131,6 @@ class imageUtilisateur():
             #On ajoute le couple coin, valeur moyenne
             couleur_carreaux[coord] = (rouge/count, vert/count, bleu/count)
         return couleur_carreaux
-    
-    def auto_rescale(self):
-        """
-        Distord et rétrécit l'image pour en faire un carré de 500*500, 
-        taille maximale où elle sera affichée sur le canevas.
-        
-        Returns
-        -------
-        None.
-
-        """
-        #dimensions voulue pour les images
-        width = 600 
-        height = 600
-        self.image = self.image.resize((width, height))
 
 """
 #test

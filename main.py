@@ -7,24 +7,24 @@ Created on Wed Mar 15 14:31:10 2023
 
 import os
 import csv
+import random
 
 import imageGalerie as im
-import random
 
 
 def dico_galerie(dossier):
-    """ Lit le dossier contenant les images de la galerie et crée
+    """Lit le dossier contenant les images de la galerie et crée
     un dictionnaire images_moyennes qui regroupe les objet images
 
     Parameters
     ----------
-    dossier : chemin d'acces
-        chemin d'accès du dossier ou sont stocké les images à utiliser
+    dossier: str
+        Chemin d'acces vers le dossier contenant la galerie
 
     Returns
     -------
     images_moyennes: dict
-        clé  : l'indice de l'image dans le dossier 
+        clef   : l'indice de l'image dans le dossier 
         valeur : objet image et tuple valeur moyenne en RGB.
     """
    
@@ -36,7 +36,7 @@ def dico_galerie(dossier):
         id_valeur_moyenne = -1
     if id_valeur_moyenne == -1:
         images_moyennes = {} #initialisation du dictionnaire
-        images_enregistrees = [] #pas d'images enregistrees
+        images_enregistrees = [] #pas d'images enregistrées
     else:
         images_moyennes, images_enregistrees = deserialiser(dossier, liste_images)
         liste_images.pop(id_valeur_moyenne)
@@ -60,10 +60,21 @@ def dico_galerie(dossier):
 
 def serialiser(images_moyennes, dossier):
     """Stocke le dictionnaire contenant les valeurs moyennes pour chaque image
-    dans un fichier texte contenu dans le fichier de la galerie.
+    dans un fichier csv contenu dans le fichier de la galerie.
 
-    Pour éviter de recalculer une fois que la galerie est mise en place.
-    Réécrit le fichier à chaque fois (mais ça ne prend que 3 ms)
+    Parameters
+    ----------
+    images_moyennes: dict
+        clef   : l'indice de l'image dans le dossier 
+        valeur : objet image et tuple valeur moyenne en RGB.    
+
+    dossier: str
+        Chemin d'acces vers le dossier contenant la galerie
+
+    Returns:
+    --------
+    None
+
     """
     with open(dossier + '/' + 'valeur_moyenne.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter = ',')
@@ -75,7 +86,26 @@ def serialiser(images_moyennes, dossier):
             writer.writerow((nom,) + val)
 
 def deserialiser(dossier, liste_images):
-    """Trouve le dico galerie à partir du fichier texte
+    """Stocke le dictionnaire contenant les valeurs moyennes pour chaque image
+    dans un fichier csv contenu dans le fichier de la galerie.
+
+    Parameters
+    ----------
+    dossier: str
+        Chemin d'acces vers le dossier contenant la galerie
+
+    liste_images:
+
+    Returns:
+    --------
+    images_moyennes: dict
+        clef   : l'indice de l'image dans le dossier 
+        valeur : objet image et tuple valeur moyenne en RGB.
+
+    images_enregistrees: list
+        Chemins vers les images qui sont enregistrées dans le csv.
+
+
     """
 
     with open(dossier + '/' + 'valeur_moyenne.csv', 'r') as file:
@@ -155,13 +185,16 @@ def choix_image(val_moyenne, dico_galerie):
 
     Parameters
     ----------
-    liste_image : list
-        DESCRIPTION.
+    val_moyenne : tuple 
+        tuple contenant les 3 valeurs RGB moyenne de la subdivision
+    dico_galerie : dict
+        clé  : l'indice de l'image dans le dossier initial
+        valeur : objet image et tuple valeur moyenne en RGB.
 
     Returns
     -------
-    image_finale : TYPE
-        DESCRIPTION.
+    image_finale : objet imageGalerie 
+        L'image choisie aléatoirement pour aller sur le canevas.
 
     """
     liste_image = liste_image_proche(val_moyenne, dico_galerie)
