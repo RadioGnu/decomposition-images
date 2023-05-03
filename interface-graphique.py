@@ -23,7 +23,7 @@ class interface:
         """
         self.racine = tk.Tk()
         self.racine.geometry("800x600")
-        self.racine.title("DECOUPIMAGE 20000")
+        self.racine.title("DECOUPIMAGE 2000")
         self.liste_logo = []
         
         self.division = tk.IntVar()
@@ -154,7 +154,8 @@ class interface:
             image_mozaique = image.rescale(600/facteur)
             x, y = coord
             self.carreau(image_mozaique, x, y)
-    
+        
+
     def carreau(self, im, x, y):
         """Place la photo "im" en (x,y)
 
@@ -182,7 +183,7 @@ class interface:
 app=interface()
 app.racine.mainloop()
 
-"""     
+""" 
 image = Image.open("gallerie/1.jpg") 
 photo = ImageTk.PhotoImage(image) 
 

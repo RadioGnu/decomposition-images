@@ -5,7 +5,8 @@ import PIL.Image as PIL
 
 class imageGalerie :
     def __init__(self, chemin):
-        """initialisation de l'objet
+        """
+        initialisation de l'objet
 
         Parameters
         ----------

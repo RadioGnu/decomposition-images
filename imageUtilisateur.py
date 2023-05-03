@@ -33,7 +33,8 @@ class imageUtilisateur():
         self.image = self.image.resize((width, height))
 
     def couleur_moyenne(self):
-        """Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
+        """
+        Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
 
         Returns self.moyenn
         -------
@@ -61,11 +62,13 @@ class imageUtilisateur():
         mv = vert/taille
         mb = bleu/taille
         
-        self.moyenne_hexa = '#{:02x}{:02x}{:02x}'.format(int(mr), int(mv), int(mb))
+        self.moyenne_hexa = "#{:02x}{:02x}{:02x}".format(int(mr), int(mv), int(mb))
+    
         return self.moyenne_hexa
 
     def subdivision(self, facteur):
-        """Divise l'image en carré répartis tous les largeur/facteur
+        """
+        Divise l'image en carré répartis tous les largeur/facteur
 
         Parameters
         ----------
@@ -101,7 +104,6 @@ class imageUtilisateur():
             clef: coordonnee du coin nord-ouest du carreau
             valeur: couleur moyenne du carreau
             
-        TODO : CHANGER LE NOM PARTOUT
         """
 
         coordonnee = self.subdivision(facteur)
@@ -129,11 +131,12 @@ class imageUtilisateur():
             #On ajoute le couple coin, valeur moyenne
             couleur_carreaux[coord] = (rouge/count, vert/count, bleu/count)
         return couleur_carreaux
-    
 
-
+"""
+#test
 if __name__ == "__main___":
     chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
     image = imageUtilisateur(chemin)
     m = image.couleur_moyenne(1)
     print(m)
+"""
