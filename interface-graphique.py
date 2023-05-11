@@ -12,6 +12,8 @@ from tkinter import filedialog as fd
 import main as f
 import imageUtilisateur as iu
 
+
+
 class interface:
     """Interface graphique de l'application
     """
@@ -40,15 +42,20 @@ class interface:
         
         self.boutongalerie=tk.Button(self.racine, text="charger la galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
-
-        self.boutoncouleur = tk.Checkbutton(self.racine, text="couleur")
-        self.bouton_black_white = tk.Checkbutton(self.racine, 
-                                                 text = "noir et blanc")
+        
+        self.boutonchoixcouleur = tk.Label(self.racine, text = "Choix de couleur")
+        
+        self.checkVar = tk.IntVar()
+        self.bouton_noir_et_blanc = tk.Checkbutton(self.racine, 
+                                                 text = "noir et blanc",onvalue = True, offvalue = False,
+                                                 variable = self.checkVar)
+        
+        self.bouton_noir_et_blanc.bind('<Button-1>', self.choix_couleur)
 
         self.creer_mosaique()
         self.creer_miniature()
         self.positionner()
-        self.choix_couleur()
+        
         
      
 
@@ -74,8 +81,11 @@ class interface:
         self.miniature.pack(side="top")
         self.slider.pack(side="top")
         self.boutonlancer.pack(side="top")
+        self.boutonchoixcouleur.pack(side = "top")
+        self.bouton_noir_et_blanc.pack(side="top")
         self.boutoncharger.pack(side="bottom")
         self.boutongalerie.pack(side="bottom")
+        
 
     #Chargements de la galerie et de l'image de l'utilisateur
     def changer_galerie(self, event):
@@ -118,7 +128,7 @@ class interface:
         """Change les couleurs de l'interface en la couleur moyenne
         de l'image choisie.
         """
-        couleur = self.image_originale.couleur_moyenne()
+        couleur, lumiere = self.image_originale.couleur_moyenne()
         self.boutonlancer.config(bg = couleur)
         self.boutonlancer.pack()
         self.boutoncharger.config(bg = couleur)
@@ -177,8 +187,11 @@ class interface:
         self.mosaique.create_image(x, y, anchor = tk.NW, image = self.logo) 
         
         
-    def choix_couleur(self):
-        pass
+    def choix_couleur(self, event):
+        if self.checkVar.get() == 1:
+            couleur, lumiere = self.image_originale.couleur_moyenne()
+            f.image_proche_noir_et_blanc(lumiere, self.dico_lum_moyenne)
+             
 
 app=interface()
 app.racine.mainloop()

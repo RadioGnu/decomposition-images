@@ -63,14 +63,17 @@ class imageGalerie :
             vert += RGB[1]
             bleu += RGB[2]
         
-        #calcul des moyennes
+        #calcul des moyennes des couleur des sous pixels
         mr = rouge/len(self.couleur) 
         mv = vert/len(self.couleur)
         mb = bleu/len(self.couleur)
         
-        self.moyenne = (mr, mv, mb)
-        #permet d'acceder à la valeur lorsque la fonction est appelée
-        return self.moyenne
+        
+        
+        # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
+        lum = 0,299 *mr + 0,587 * mv + 0,114 * mb
+        moyenne = (mr, mv, mb, lum)
+        return moyenne
     
     def auto_rescale(self):
         """Distord et rétrécit l'image pour en faire un carré de 500*500, 

@@ -25,7 +25,7 @@ def dico_galerie(dossier):
     -------
     images_moyennes: dict
         clef   : l'indice de l'image dans le dossier 
-        valeur : objet image et tuple valeur moyenne en RGB.
+        valeur : objet image et tuple valeur moyenne en RGB et lum.
     """
    
     
@@ -49,13 +49,15 @@ def dico_galerie(dossier):
             #-> chemin d'accès complet
             #création de l'objet image a partir du chemin d'accès
             imageGal = im.imageGalerie(acces)  
-            #utilisation de la méthode couleur moyenne de la classe imageGalerie
+            # utilisation de la méthode couleur moyenne de la classe imageGalerie
+            # incrémentation du dictionnaire d'images couleurs + luminosité en dernière valeur
             val = imageGal.couleur_moyenne() 
-            images_moyennes[i] = imageGal, val 
+            images_moyennes[i] = imageGal, val
+            
             
     serialiser(images_moyennes, dossier)
         
-    return images_moyennes 
+    return images_moyennes
       
 
 def serialiser(images_moyennes, dossier):
@@ -135,7 +137,7 @@ def liste_image_proche(val_moyenne, dico_galerie):
     Parameters
     ----------
     val_moyenne : tuple 
-        tuple contenant les 3 valeurs RGB moyenne de la subdivision
+        tuple contenant les 3 valeurs RGB moyenne de la subdivision et la valeur moyenne de la luminosité.
     dico_galerie : dict
         clé  : l'indice de l'image dans le dossier initial
         valeur : objet image et tuple valeur moyenne en RGB.
@@ -143,7 +145,7 @@ def liste_image_proche(val_moyenne, dico_galerie):
     Returns
     -------
     couleur_proche : list
-        liste des image ayant une couleur moyenne proche de la subdivision
+        liste des images ayant une couleur moyenne proche de la subdivision
     """
     
     couleur_proche = []
@@ -202,6 +204,19 @@ def choix_image(val_moyenne, dico_galerie):
     image_finale = liste_image[i]
     
     return image_finale
+
+def image_proche_noir_et_blanc (lum_image_ref, dico_galerie):
+    
+    liste_lum = []
+    ecart_min = 255*3
+    for image, lum_moy in dico_galerie.values():
+        liste_lum.append(lum_moy)
+        ecart = liste_lum[3]-lum_image_ref
+        if ecart <= ecart_min :
+            ecart = ecart_min
+    image_proche = dico_galerie[image]
+    
+    return image_proche
 
 
 #Tests

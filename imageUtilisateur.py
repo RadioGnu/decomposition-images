@@ -63,8 +63,11 @@ class imageUtilisateur():
         mb = bleu/taille
         
         self.moyenne_hexa = "#{:02x}{:02x}{:02x}".format(int(mr), int(mv), int(mb))
+        
+        # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
+        lum_main = 0,299 *mr + 0,587 * mv + 0,114 * mb
+        return self.moyenne_hexa, lum_main
     
-        return self.moyenne_hexa
 
     def subdivision(self, facteur):
         """
