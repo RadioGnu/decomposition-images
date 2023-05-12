@@ -8,6 +8,7 @@ Created on Wed Mar 15 14:29:33 2023
 from PIL import Image, ImageTk
 import tkinter as tk
 from tkinter import filedialog as fd
+import time 
 
 import main as f
 import imageUtilisateur as iu
@@ -27,6 +28,7 @@ class interface:
         self.racine.geometry("800x600")
         self.racine.title("DECOUPIMAGE 2000")
         self.liste_logo = []
+        self.parcours_multiple = 0
         
         self.division = tk.IntVar()
         # de 20 a 70 parce que spider plante après 70*70 carreau, et que l'image ne ressemble a rien avant 20*20
@@ -35,14 +37,14 @@ class interface:
                              font=("Calibri", 8))
         
         self.boutonlancer=tk.Button(self.racine, text="lancer")
-        self.boutonlancer.bind('<Button-1>', self.lancer)
+        self.boutonlancer.bind('<Button-1>', self.atribution)
         
         self.boutoncharger=tk.Button(self.racine, text="charger l'image")
         self.boutoncharger.bind('<Button-1>', self.charger)
         
         self.boutongalerie=tk.Button(self.racine, text="charger la galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
-        
+
         self.boutonchoixcouleur = tk.Label(self.racine, text = "Choix de couleur")
         
         self.checkVar = tk.IntVar()
@@ -51,13 +53,12 @@ class interface:
                                                  variable = self.checkVar)
         
         self.bouton_noir_et_blanc.bind('<Button-1>', self.choix_couleur)
+        self.boutondemo = tk.Button(self.racine, text="lancer version demo")
+        self.boutondemo.bind('<Button-1>', self.atribution)
 
         self.creer_mosaique()
         self.creer_miniature()
         self.positionner()
-        
-        
-     
 
     def creer_miniature(self):
         """Crée une miniature pour la photo choisie par l'utlisateur
@@ -83,6 +84,7 @@ class interface:
         self.boutonlancer.pack(side="top")
         self.boutonchoixcouleur.pack(side = "top")
         self.bouton_noir_et_blanc.pack(side="top")
+        self.boutondemo.pack(side = "top")
         self.boutoncharger.pack(side="bottom")
         self.boutongalerie.pack(side="bottom")
         
@@ -128,43 +130,90 @@ class interface:
         """Change les couleurs de l'interface en la couleur moyenne
         de l'image choisie.
         """
-        couleur, lumiere = self.image_originale.couleur_moyenne()
-        self.boutonlancer.config(bg = couleur)
+        couleur, lumiere, font_color = self.image_originale.couleur_moyenne()
+        self.boutonlancer.config(bg = couleur, fg=font_color)
         self.boutonlancer.pack()
-        self.boutoncharger.config(bg = couleur)
+        
+        self.boutoncharger.config(bg = couleur, fg = font_color)
         self.boutoncharger.pack()
-        self.boutongalerie.config(bg = couleur)
+        
+        self.boutongalerie.config(bg = couleur, fg = font_color)
         self.boutongalerie.pack()
+        
         self.slider.config(troughcolor = couleur)
         self.slider.pack()
+        
+        self.boutondemo.config(bg = couleur, fg = font_color)
+        self.boutongalerie.pack()
 
     def prevenir_annuler(self):
         """Prévient l'utlisateur qu'il a annulé la sélection
         d'une image
         """
+        
         self.message = tk.messagebox.showwarning(title="Annulation",
                                 message="Vous avez annulé votre sélection,"
                                         +"pas de nouvelle image chargée."
                                                  )
 
+    
+    def atribution(self, event):
+        """ Renvoie vers le bon découpage en fonction du bouton appuyé"""
+        widget = event.widget
+        if widget == self.boutonlancer :
+            facteur = self.division.get()
+            self.lancer(facteur)
+        else :
+            self.animation()
+            
+    def animation(self):
+         """ Permet d'animer le caneva comme un diaporama en découpage l'image en multiple de 2 
+         de plus en plus grand, puis en recommencant à 2 début """
+         start = time.time()
+         liste_multiple = [2, 4, 8, 16, 32, 64]
+         facteur = liste_multiple[self.parcours_multiple]
+         self.parcours_multiple += 1
+         if self.parcours_multiple == len(liste_multiple):
+             self.parcours_multiple = 0
+         
+         self.lancer(facteur)
+         delai = time.time() - start
+         self.racine.after(int(20-delai)*1000 , self.animation)
+         
         
     #Découpage de l'image en la mosaïque
-    def lancer(self, event):
+    def lancer(self, facteur):
         """Lance le programme de création de la mosaïque à partir
         de l'image de l'utilisateur.
         """
-        facteur = self.division.get()
+        
         
         carreauline = self.image_originale.couleur_carreaux(facteur)
         self.liste_logo = []
         
+        """ if self.noir_blanc.get() == True : 
+            for coord, couleurs in carreauline.items() :
+                image = f.choix_image(couleurs, self.galerie)
+                
+                image_mosaique = image.rescale(600/facteur)
+                
+                #ATENTION : c'est hyper long comme ca ... faudrait mieux convertir toute la 
+                #galerie parce que la il fait plein d'opération plusieur fois pour rien
+                image_mosaique = image_mosaique.convert("L")
+                x, y = coord
+                self.carreau(image_mosaique, x, y)
+        
+        else : """
+        
         for coord, couleurs in carreauline.items() :
             image = f.choix_image(couleurs, self.galerie)
+
+            image_mosaique = image.rescale(600/facteur)
             
-            image_mozaique = image.rescale(600/facteur)
             x, y = coord
-            self.carreau(image_mozaique, x, y)
-        
+            self.carreau(image_mosaique, x, y)
+            
+            
 
     def carreau(self, im, x, y):
         """Place la photo "im" en (x,y)
@@ -192,7 +241,6 @@ class interface:
             couleur, val_moy = self.image_originale.couleur_moyenne()
             lumiere = val_moy[3]
             f.image_proche_noir_et_blanc(lumiere, self.galerie)
-             
 
 app=interface()
 app.racine.mainloop()

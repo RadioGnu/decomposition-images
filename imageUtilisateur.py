@@ -34,15 +34,24 @@ class imageUtilisateur():
 
     def couleur_moyenne(self):
         """
-        Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
+        Renvoie un tuple RGB correspondant a la couleur moyenne de l'image, du 
+        blanc ou du noir pour changer la couleur de l'écriture sur l'interface 
+        si la couleur moyenne est trop foncée ou trop claire'
 
-        Returns self.moyenn
+        Returns
+        self.moyenne_hexa 
         -------
-        TYPE : tuple 
-        tuple des trois moyenne de couleurs.
+        TYPE : str 
+        correspondance hexa de la couleur moyenne en RGB. (en self au cas ou on aurait besoin de la rappeler)
+        
+        font_color
+        -------
+        TYPE : str 
+        Incation pour utiliser une police noir ou blanche en fonction de la clareté de l'image
 
         """
         
+        font_color = "black"
         #initialisation
         rouge = 0 
         vert = 0
@@ -61,13 +70,15 @@ class imageUtilisateur():
         mr = rouge/taille
         mv = vert/taille
         mb = bleu/taille
+        #si la couleur est trop foncée, on ne vera pas les écritures
+        if (mr, mv, mb)<= (127, 127, 127):
+            font_color = "white"
         
         self.moyenne_hexa = "#{:02x}{:02x}{:02x}".format(int(mr), int(mv), int(mb))
         
         # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
         lum_main = 0,299 *mr + 0,587 * mv + 0,114 * mb
-        return self.moyenne_hexa, lum_main
-    
+        return self.moyenne_hexa, lum_main, font_color
 
     def subdivision(self, facteur):
         """
