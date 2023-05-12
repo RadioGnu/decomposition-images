@@ -71,7 +71,7 @@ class imageGalerie :
         
         
         # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
-        lum = 0,299 *mr + 0,587 * mv + 0,114 * mb
+        lum = 0.299 *mr + 0.587 * mv + 0.114 * mb
         moyenne = (mr, mv, mb, lum)
         return moyenne
     

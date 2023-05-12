@@ -189,8 +189,9 @@ class interface:
         
     def choix_couleur(self, event):
         if self.checkVar.get() == 1:
-            couleur, lumiere = self.image_originale.couleur_moyenne()
-            f.image_proche_noir_et_blanc(lumiere, self.dico_lum_moyenne)
+            couleur, val_moy = self.image_originale.couleur_moyenne()
+            lumiere = val_moy[3]
+            f.image_proche_noir_et_blanc(lumiere, self.galerie)
              
 
 app=interface()

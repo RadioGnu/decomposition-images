@@ -208,13 +208,14 @@ def choix_image(val_moyenne, dico_galerie):
 def image_proche_noir_et_blanc (lum_image_ref, dico_galerie):
     
     liste_lum = []
-    ecart_min = 255*3
-    for image, lum_moy in dico_galerie.values():
+    ecart_min = 256
+    for image, val_moy in dico_galerie.values():
+        lum_moy = val_moy[3]
         liste_lum.append(lum_moy)
-        ecart = liste_lum[3]-lum_image_ref
+        ecart = lum_moy-lum_image_ref
         if ecart <= ecart_min :
-            ecart = ecart_min
-    image_proche = dico_galerie[image]
+            ecart_min = ecart
+            image_proche = image
     
     return image_proche
 
