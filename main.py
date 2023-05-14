@@ -48,11 +48,15 @@ def dico_galerie(dossier):
             #pour retrouver les images à coup sûr dans les fichiers
             #-> chemin d'accès complet
             #création de l'objet image a partir du chemin d'accès
-            imageGal = im.imageGalerie(acces)  
+            imageGal = im.imageGalerie(acces)
+            
             # utilisation de la méthode couleur moyenne de la classe imageGalerie
             # incrémentation du dictionnaire d'images couleurs + luminosité en dernière valeur
             val = imageGal.couleur_moyenne() 
-            images_moyennes[i] = imageGal, val
+           
+            imageNB = imageGal.image
+            imageNB = imageNB.convert("L")
+            images_moyennes[i] = imageGal, imageNB, val
             
             
     serialiser(images_moyennes, dossier)
@@ -80,7 +84,7 @@ def serialiser(images_moyennes, dossier):
     """
     with open(dossier + '/' + 'valeur_moyenne.csv', 'w', newline='') as file:
         writer = csv.writer(file, delimiter = ',')
-        for (image, val) in images_moyennes.values():
+        for (image, imageNB, val) in images_moyennes.values():
             #On met le chemin d'accès complet pour chaque image
             chemin = image.chemin
             nom = chemin.replace(dossier +'/', '')
@@ -117,15 +121,18 @@ def deserialiser(dossier, liste_images):
         images_moyennes = {}
         for row in lecteur:
             nom = row[0]
+            
             if nom in liste_images:
                 #On lit simplement un chemin d'accès
                 chemin = dossier + '/' + nom 
                 image = im.imageGalerie(chemin)
+                imageNB = image.image
+                imageNB = imageNB.convert("L")
                 #et on ajoute à liste_images
                 images_enregistrees.append(chemin)
                 #Convertit chaque élément en flottant
                 moyenne = tuple(map(float, row[1:]))
-                images_moyennes[i] = image, moyenne
+                images_moyennes[i] = image, imageNB, moyenne
                 i += 1
 
     return images_moyennes, images_enregistrees 
@@ -152,7 +159,7 @@ def liste_image_proche(val_moyenne, dico_galerie):
     #distance la plus élevée a l'image -> nécessairement des images plus proche
     ecart_min = [256, 256, 256]
     
-    for image, val in dico_galerie.values(): #parcours du dictionnaire
+    for image, imageNB, val in dico_galerie.values(): #parcours du dictionnaire
         RGB_proche = [] #initialisation de la liste des écarts
         RGB_min = []
 
@@ -205,17 +212,18 @@ def choix_image(val_moyenne, dico_galerie):
     
     return image_finale
 
-def image_proche_noir_et_blanc (lum_image_ref, dico_galerie):
+def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
     
     liste_lum = []
     ecart_min = 256
-    for image, val_moy in dico_galerie.values():
+    for image, imageNB, val_moy in dico_galerie.values():
         lum_moy = val_moy[3]
         liste_lum.append(lum_moy)
-        ecart = lum_moy-lum_image_ref
+        ecart = abs(lum_moy-lum_image_ref)
+
         if ecart <= ecart_min :
             ecart_min = ecart
-            image_proche = image
+            image_proche = imageNB
     
     return image_proche
 
@@ -223,13 +231,11 @@ def image_proche_noir_et_blanc (lum_image_ref, dico_galerie):
 #Tests
 """
 if __name__ == "__main__":
-    dossier ="galerie"
+    dossier ="C:/Users/solen/OneDrive/Bureau/test_galerie"
     dico = dico_galerie(dossier)
-             
-    val_moy = (255, 51, 204) 
-    liste = liste_image_proche(val_moy, dico)
-    for element in liste :
-        element.image.show()
+    
+    image_proche = image_proche_noir_et_blanc(250, dico)
+    image_proche.show()
 #def rgb_to_hex(r, g, b):
     #return '#{:02x}{:02x}{:02x}'.format(r, g, b)
 """

@@ -45,16 +45,18 @@ class interface:
         self.boutongalerie=tk.Button(self.racine, text="charger la galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
 
-        self.boutonchoixcouleur = tk.Label(self.racine, text = "Choix de couleur")
+        self.labelchoixmodes = tk.Label(self.racine, text = "Choix des modes")
         
-        self.checkVar = tk.IntVar()
+        self.noir_blanc = tk.IntVar()
         self.bouton_noir_et_blanc = tk.Checkbutton(self.racine, 
                                                  text = "noir et blanc",onvalue = True, offvalue = False,
-                                                 variable = self.checkVar)
+                                                 variable = self.noir_blanc)
         
-        self.bouton_noir_et_blanc.bind('<Button-1>', self.choix_couleur)
-        self.boutondemo = tk.Button(self.racine, text="lancer version demo")
-        self.boutondemo.bind('<Button-1>', self.atribution)
+        
+        self.DemoVar = tk.IntVar()
+        self.boutondemo = tk.Checkbutton(self.racine, 
+                                                 text="lancer version demo", onvalue = True, offvalue = False,
+                                                 variable = self.DemoVar)
 
         self.creer_mosaique()
         self.creer_miniature()
@@ -82,7 +84,7 @@ class interface:
         self.miniature.pack(side="top")
         self.slider.pack(side="top")
         self.boutonlancer.pack(side="top")
-        self.boutonchoixcouleur.pack(side = "top")
+        self.labelchoixmodes.pack(side = "top")
         self.bouton_noir_et_blanc.pack(side="top")
         self.boutondemo.pack(side = "top")
         self.boutoncharger.pack(side="bottom")
@@ -100,12 +102,16 @@ class interface:
         self.chemin_galerie = fd.askdirectory()
         #Si l'utilisateur annule, le chemin renvoyé fait partie
         #de la liste dans le test
-        if self.chemin_galerie in [(), '']:
+        if self.chemin_galerie in ['', ()]:
             self.prevenir_annuler()
+            etiquette.destroy()
+        
+
         else:
             self.galerie = f.dico_galerie(self.chemin_galerie)
         
         etiquette.destroy()
+        
         
     def charger(self,event):
         """Charge l'image demandée par l'utilisateur, la place dans
@@ -143,8 +149,6 @@ class interface:
         self.slider.config(troughcolor = couleur)
         self.slider.pack()
         
-        self.boutondemo.config(bg = couleur, fg = font_color)
-        self.boutongalerie.pack()
 
     def prevenir_annuler(self):
         """Prévient l'utlisateur qu'il a annulé la sélection
@@ -153,14 +157,14 @@ class interface:
         
         self.message = tk.messagebox.showwarning(title="Annulation",
                                 message="Vous avez annulé votre sélection,"
-                                        +"pas de nouvelle image chargée."
+                                        +"pas de nouvelle image ou galerie chargée."
                                                  )
 
     
     def atribution(self, event):
         """ Renvoie vers le bon découpage en fonction du bouton appuyé"""
         widget = event.widget
-        if widget == self.boutonlancer :
+        if self.DemoVar.get() == 0 :
             facteur = self.division.get()
             self.lancer(facteur)
         else :
@@ -178,7 +182,8 @@ class interface:
          
          self.lancer(facteur)
          delai = time.time() - start
-         self.racine.after(int(20-delai)*1000 , self.animation)
+         if self.DemoVar.get() == 1 :
+             self.racine.after(int(20-delai)*1000 , self.animation)
          
         
     #Découpage de l'image en la mosaïque
@@ -189,29 +194,33 @@ class interface:
         
         
         carreauline = self.image_originale.couleur_carreaux(facteur)
+
         self.liste_logo = []
         
-        """ if self.noir_blanc.get() == True : 
+        if self.noir_blanc.get() == 1 :
             for coord, couleurs in carreauline.items() :
-                image = f.choix_image(couleurs, self.galerie)
+                R, V, B = couleurs
+                lum = 0.299 *R + 0.587 * V + 0.114 * B
                 
-                image_mosaique = image.rescale(600/facteur)
+                image = f.image_proche_noir_et_blanc(lum, self.galerie)
+                #pas un objet de la classe, mais un objet pil, on ne peux pas utiliser la fonction rescale ...
+                taille = int(600/facteur)+1
+                
+                image_mosaique = image.resize((taille, taille))
                 
                 #ATENTION : c'est hyper long comme ca ... faudrait mieux convertir toute la 
                 #galerie parce que la il fait plein d'opération plusieur fois pour rien
-                image_mosaique = image_mosaique.convert("L")
                 x, y = coord
                 self.carreau(image_mosaique, x, y)
         
-        else : """
-        
-        for coord, couleurs in carreauline.items() :
-            image = f.choix_image(couleurs, self.galerie)
-
-            image_mosaique = image.rescale(600/facteur)
-            
-            x, y = coord
-            self.carreau(image_mosaique, x, y)
+        else : 
+            for coord, couleurs in carreauline.items() :
+                image = f.choix_image(couleurs, self.galerie)
+    
+                image_mosaique = image.rescale(600/facteur)
+                
+                x, y = coord
+                self.carreau(image_mosaique, x, y)
             
             
 
@@ -236,11 +245,12 @@ class interface:
         self.mosaique.create_image(x, y, anchor = tk.NW, image = self.logo) 
         
         
-    def choix_couleur(self, event):
-        if self.checkVar.get() == 1:
+    """def choix_couleur(self, event):
+        if self.noir_blanc.get() == 0 :
             couleur, val_moy = self.image_originale.couleur_moyenne()
             lumiere = val_moy[3]
-            f.image_proche_noir_et_blanc(lumiere, self.galerie)
+            f.image_proche_noir_et_blanc(lumiere, self.galerie)"""
+            
 
 app=interface()
 app.racine.mainloop()

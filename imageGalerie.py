@@ -1,6 +1,7 @@
 """Fichier contenant la definition de la classe permettant de creer les objets
 image a partir des photos de la galerie d'images"""
 
+
 import PIL.Image as PIL
 
 class imageGalerie :
@@ -21,6 +22,7 @@ class imageGalerie :
         #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
         self.image = PIL.open(chemin) 
         #permet que toutes les images soient dans les dimensions voulues
+        self.auto_rescale()
         
         self.width = self.image.width
         self.height = self.image.height
@@ -37,12 +39,13 @@ class imageGalerie :
 
         """
         self.couleur = []
-        self.auto_rescale()
+        
         for i in range (self.width):
             for j in range(self.height):
                 #retourne un tuple RGB du pixel de position (i, j)
                 RGB = self.image.getpixel((i,j)) 
                 self.couleur.append(RGB)
+        
         
                 
     def couleur_moyenne(self):
@@ -109,3 +112,11 @@ class imageGalerie :
         height = int(cote)+1
         rescaled_image = self.image.resize((width, height))
         return rescaled_image
+
+"""
+objet = imageGalerie("C:/Users/solen/OneDrive/Documents/decomposition-images/galerie/2.jpg")
+image = objet.image
+nb = image.convert("L")
+nb.show()
+"""
+

@@ -146,10 +146,11 @@ class imageUtilisateur():
             couleur_carreaux[coord] = (rouge/count, vert/count, bleu/count)
         return couleur_carreaux
 
-"""
+
 #test
+"""
 if __name__ == "__main___":
-    chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
+    chemin = "C:/Users/solen/OneDrive/Bureau/test_galerie/2.jpg"
     image = imageUtilisateur(chemin)
     m = image.couleur_moyenne(1)
     print(m)
