@@ -5,7 +5,7 @@ image a partir des photos de la galerie d'images"""
 import PIL.Image as PIL
 
 class imageGalerie :
-    def __init__(self, chemin):
+    def __init__(self, chemin, taille_caneva):
         """
         initialisation de l'objet
 
@@ -22,12 +22,17 @@ class imageGalerie :
         #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
         self.image = PIL.open(chemin) 
         #permet que toutes les images soient dans les dimensions voulues
+        self.dimension = taille_caneva
+        
         self.auto_rescale()
         
-        self.width = self.image.width
-        self.height = self.image.height
         
         
+        
+        
+    def __str__(self):
+        return f"{self.chemin_acces}"
+    
         
     def liste_RGB(self):
         """Création d'une liste contenant les tuples des valeurs 
@@ -40,8 +45,8 @@ class imageGalerie :
         """
         self.couleur = []
         
-        for i in range (self.width):
-            for j in range(self.height):
+        for i in range (self.dimension):
+            for j in range(self.dimension):
                 #retourne un tuple RGB du pixel de position (i, j)
                 RGB = self.image.getpixel((i,j)) 
                 self.couleur.append(RGB)
@@ -54,7 +59,7 @@ class imageGalerie :
         Returns self.moyenn
         -------
         TYPE : tuple 
-        tuple des trois moyenne de couleurs.
+        tuple des trois moyenne de couleurs et de la luminosité.
         """
         
         self.liste_RGB()
@@ -90,8 +95,8 @@ class imageGalerie :
 
         """
         #dimensions voulue pour les images
-        width = 600 
-        height = 600
+        width = self.dimension 
+        height = self.dimension
         self.image = self.image.resize((width, height))
         
 
