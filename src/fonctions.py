@@ -5,8 +5,8 @@ Created on Wed Mar 15 14:31:10 2023
 @author: DAMON Coline
 """
 
-import os
 import csv
+import os
 import random
 
 import imageGalerie as im

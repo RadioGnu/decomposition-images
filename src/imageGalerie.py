@@ -24,16 +24,15 @@ class imageGalerie :
         #permet que toutes les images soient dans les dimensions voulues
         self.dimension = taille_caneva
         
-        self.auto_rescale()
+        self.auto_rescale()        
         
-        
-        
-        
-        
+
     def __str__(self):
+        """Permet d'identifier l'image plus facilement.
+        """
         return f"{self.chemin_acces}"
     
-        
+
     def liste_RGB(self):
         """Création d'une liste contenant les tuples des valeurs 
         en rouge, vert et bleu pour chaque pixel de l'image.        
@@ -80,7 +79,8 @@ class imageGalerie :
         
         
         
-        # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
+        #La luminance de l'image permet de la convertir
+        #en nuances de gris.
         lum = 0.299 *mr + 0.587 * mv + 0.114 * mb
         moyenne = (mr, mv, mb, lum)
         return moyenne

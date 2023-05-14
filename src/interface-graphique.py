@@ -5,10 +5,11 @@ Created on Wed Mar 15 14:29:33 2023
 
 @author: ecarrondel
 """
+import time 
+
 from PIL import Image, ImageTk
 import tkinter as tk
 from tkinter import filedialog as fd
-import time 
 
 import fonctions as f
 import imageUtilisateur as iu
@@ -39,7 +40,9 @@ class interface:
         
         
         self.division = tk.IntVar()
-        # de 20 a 70 parce que spider plante après 70*70 carreau, et que l'image ne ressemble a rien avant 20*20
+        #Le slider va de 20 a 70 parce que en-dessous de 20*20,
+        #l'image n'a pas trop de sens,
+        #et au-delà de 70, le programme peut planter (sur spyder)
         self.slider=tk.Scale(self.racine, orient='horizontal', from_=20, to=70,
                              resolution=1, length=200, variable = self.division,
                              font=("Calibri", 8))
@@ -113,7 +116,6 @@ class interface:
         if self.chemin_galerie in ['', ()]:
             self.prevenir_annuler()
             etiquette.destroy()
-        
 
         else:
             self.galerie = f.dico_galerie(self.chemin_galerie, self.taille_caneva)
@@ -172,16 +174,16 @@ class interface:
     def atribution(self, event):
         """ Renvoie vers le bon découpage en fonction du bouton appuyé"""
         
-        if self.image_originale == None or self.galerie == None :
+        if self.image_originale == None or self.galerie == None:
             self.message = tk.messagebox.showwarning(title="Erreur",
                                     message="Vous n'avez pas choisie d'image et/ou de galerie. \n"
                                             +"Veuillez charger votre image et votre galerie pour lancer le programe")
         
-        else :
-            if self.DemoVar.get() == 0 :
+        else:
+            if self.DemoVar.get() == 0:
                 facteur = self.division.get()
                 self.lancer(facteur)
-            else :
+            else:
                 self.animation()
                 self.parcours_multiple = 0
             
@@ -197,7 +199,7 @@ class interface:
          
          self.lancer(facteur)
          delai = time.time() - start
-         if self.DemoVar.get() == 1 :
+         if self.DemoVar.get() == 1:
              self.racine.after(int(20-delai)*1000 , self.animation)
         
          
@@ -209,13 +211,13 @@ class interface:
         """
         
         
-        carreauline = self.image_originale.couleur_carreaux(facteur)
+        liste_carreaux = self.image_originale.couleur_carreaux(facteur)
 
         self.liste_logo = []
         
         #mettre le if ... else... avant les boucles permet de ne faire qu'une fois le test
-        if self.noir_blanc.get() == 1 :
-            for coord, couleurs in carreauline.items() :
+        if self.noir_blanc.get() == 1:
+            for coord, couleurs in liste_carreaux.items():
                 R, V, B = couleurs
                 lum = 0.299 *R + 0.587 * V + 0.114 * B
                 
@@ -226,8 +228,8 @@ class interface:
                 x, y = coord
                 self.carreau(image_mosaique, x, y)
         
-        else : 
-            for coord, couleurs in carreauline.items() :
+        else: 
+            for coord, couleurs in liste_carreaux.items():
                 image = f.choix_image(couleurs, self.galerie)
     
                 image_mosaique = f.rescale(image.image, facteur, self.taille_caneva)

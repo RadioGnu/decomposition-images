@@ -17,6 +17,8 @@ class imageUtilisateur():
         
 
     def __str__(self):
+        """Permet d'identifier l'image plus facilement.
+        """
         return f"{self.chemin_acces}"
     
     def auto_rescale(self):
@@ -72,15 +74,16 @@ class imageUtilisateur():
         mv = vert/taille
         mb = bleu/taille
         
-        #si la couleur est trop foncée, on ne vera pas les écritures
+        #si la couleur est trop foncée, on ne vera pas les écritures.
         if (mr, mv, mb)<= (127, 127, 127):
             font_color = "white"
         
         self.moyenne_hexa = "#{:02x}{:02x}{:02x}".format(int(mr), int(mv), int(mb))
         
-        # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
-        lum_main = 0,299 *mr + 0,587 * mv + 0,114 * mb
-        return self.moyenne_hexa, lum_main, font_color
+        #La luminance de l'image permet de la convertir
+        #en nuances de gris.
+        lum_moy = 0,299 *mr + 0,587 * mv + 0,114 * mb
+        return self.moyenne_hexa, lum_moy, font_color
 
     def subdivision(self, facteur):
         """
@@ -133,7 +136,7 @@ class imageUtilisateur():
             rouge = 0
             vert = 0
             bleu = 0
-            #Pour faire la moyenne, nombre de pixels
+            #Pour faire la moyenne, on compte le nombre de pixels
             count = 0
             
             for i in range(int(coord[0]), int(x)):
