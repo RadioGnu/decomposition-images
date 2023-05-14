@@ -10,7 +10,7 @@ import tkinter as tk
 from tkinter import filedialog as fd
 import time 
 
-import main as f
+import fonctions as f
 import imageUtilisateur as iu
 
 
@@ -197,19 +197,16 @@ class interface:
 
         self.liste_logo = []
         
+        #mettre le if ... else... avant les boucles permet de ne faire qu'une fois le test
         if self.noir_blanc.get() == 1 :
             for coord, couleurs in carreauline.items() :
                 R, V, B = couleurs
                 lum = 0.299 *R + 0.587 * V + 0.114 * B
                 
                 image = f.image_proche_noir_et_blanc(lum, self.galerie)
-                #pas un objet de la classe, mais un objet pil, on ne peux pas utiliser la fonction rescale ...
-                taille = int(600/facteur)+1
                 
-                image_mosaique = image.resize((taille, taille))
+                image_mosaique = f.rescale(image, facteur)
                 
-                #ATENTION : c'est hyper long comme ca ... faudrait mieux convertir toute la 
-                #galerie parce que la il fait plein d'opération plusieur fois pour rien
                 x, y = coord
                 self.carreau(image_mosaique, x, y)
         
@@ -217,7 +214,7 @@ class interface:
             for coord, couleurs in carreauline.items() :
                 image = f.choix_image(couleurs, self.galerie)
     
-                image_mosaique = image.rescale(600/facteur)
+                image_mosaique = f.rescale(image.image, facteur)
                 
                 x, y = coord
                 self.carreau(image_mosaique, x, y)

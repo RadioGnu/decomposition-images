@@ -228,6 +228,27 @@ def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
     return image_proche
 
 
+def rescale(image, facteur):
+    """Permet de mettre l'image a la taille voulue pour le canevas
+    
+    Parameters
+    ----------
+    cote : float
+        Taille de l'image finale (carrée)
+
+    Returns
+    -------
+    rescaled_image : image (jpeg, png ... en fonction de l'image d'origine)
+    """
+    
+    # +1 pour eviter davoir des trous dans la grille => arondi au dessus plutot que au dessous
+    taille = int(600/facteur) +1
+    
+    rescaled_image = image.resize((taille, taille))
+    return rescaled_image
+    
+
+
 #Tests
 """
 if __name__ == "__main__":

@@ -94,24 +94,6 @@ class imageGalerie :
         height = 600
         self.image = self.image.resize((width, height))
         
-    def rescale(self, cote):
-        """Permet de mettre l'image a la taille voulue pour le canevas
-        
-        Parameters
-        ----------
-        cote : float
-            Taille de l'image finale (carrée)
-
-        Returns
-        -------
-        rescaled_image : image (jpeg, png ... en fonction de l'image d'origine)
-        """
-        
-        # +1 pour eviter davoir des trous dans la grille => arondi au dessus plutot que au dessous
-        width = int(cote)+1
-        height = int(cote)+1
-        rescaled_image = self.image.resize((width, height))
-        return rescaled_image
 
 """
 objet = imageGalerie("C:/Users/solen/OneDrive/Documents/decomposition-images/galerie/2.jpg")
