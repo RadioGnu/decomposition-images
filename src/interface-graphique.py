@@ -169,6 +169,7 @@ class interface:
             self.lancer(facteur)
         else :
             self.animation()
+            self.parcours_multiple = 0
             
     def animation(self):
          """ Permet d'animer le caneva comme un diaporama en découpage l'image en multiple de 2 
