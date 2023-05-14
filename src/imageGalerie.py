@@ -50,8 +50,7 @@ class imageGalerie :
                 RGB = self.image.getpixel((i,j)) 
                 self.couleur.append(RGB)
         
-        
-                
+
     def couleur_moyenne(self):
         """Renvoie un tuple RGB correspondant a la couleur moyenne de l'image
 
@@ -61,28 +60,19 @@ class imageGalerie :
         tuple des trois moyenne de couleurs et de la luminosité.
         """
         
-        self.liste_RGB()
-        #initialisation
-        rouge = 0 
-        vert = 0
-        bleu = 0
-        #parcours de la liste de pixel
-        for RGB in self.couleur: 
-            rouge += RGB[0]
-            vert += RGB[1]
-            bleu += RGB[2]
-        
-        #calcul des moyennes des couleur des sous pixels
-        mr = rouge/len(self.couleur) 
-        mv = vert/len(self.couleur)
-        mb = bleu/len(self.couleur)
-        
-        
+        #getdata(band) renvoie une liste des valeurs des pixels
+        #pour la band rouge, verte ou bleue.
+        #On somme ces contributions et on les divise par la longeur,
+        #pour obtenir la valeur moyenne rouge, verte et bleue.
+        moyenne_rvb = tuple(sum(self.image.getdata(band))/len(self.image.getdata(band)) 
+                    for band in range(3))
+       
+        rouge, vert, bleu = moyenne_rvb
         
         #La luminance de l'image permet de la convertir
         #en nuances de gris.
-        lum = 0.299 *mr + 0.587 * mv + 0.114 * mb
-        moyenne = (mr, mv, mb, lum)
+        lum = 0.299 * rouge + 0.587 * vert + 0.114 * bleu
+        moyenne = (rouge, vert, bleu, lum)
         return moyenne
     
     def auto_rescale(self):
