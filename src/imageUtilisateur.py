@@ -3,7 +3,7 @@ from PIL import Image
 
 
 class imageUtilisateur():
-    def __init__(self, chemin_acces: str):
+    def __init__(self, chemin_acces: str, taille_caneva):
         """Initialisation de la classe
 
         Paramaters
@@ -12,15 +12,17 @@ class imageUtilisateur():
         """
         self.chemin_acces = chemin_acces
         self.image = Image.open(self.chemin_acces)
+        self.dimension = taille_caneva
         self.auto_rescale()
-        self.width = self.image.width
-        self.height = self.image.height
+        
 
     def __str__(self):
+        """Permet d'identifier l'image plus facilement.
+        """
         return f"{self.chemin_acces}"
     
     def auto_rescale(self):
-        """Distord et rétrécit l'image pour en faire un carré de 500*500, 
+        """Distord et rétrécit l'image pour en faire un carré de la taille du caneva, 
         taille maximale où elle sera affichée sur le canevas.
         
         Returns
@@ -28,8 +30,8 @@ class imageUtilisateur():
         None.
         """
         #dimensions voulue pour les images
-        width = 600 
-        height = 600
+        width = self.dimension 
+        height = self.dimension
         self.image = self.image.resize((width, height))
 
     def couleur_moyenne(self):
@@ -51,14 +53,15 @@ class imageUtilisateur():
 
         """
         
-        font_color = "black"
+        
         #initialisation
+        font_color = "black"
         rouge = 0 
         vert = 0
         bleu = 0
         #parcours par pixel
-        for i in range (self.width):
-            for j in range(self.height):
+        for i in range (self.dimension):
+            for j in range(self.dimension):
                 #retourne un tuple RGB du pixel de position (i, j)
                 RGB = self.image.getpixel((i,j)) 
                 rouge += RGB[0]
@@ -66,19 +69,21 @@ class imageUtilisateur():
                 bleu += RGB[2]
             
         #calcul des moyennes
-        taille = self.width * self.height
+        taille = self.dimension * self.dimension
         mr = rouge/taille
         mv = vert/taille
         mb = bleu/taille
-        #si la couleur est trop foncée, on ne vera pas les écritures
+        
+        #si la couleur est trop foncée, on ne vera pas les écritures.
         if (mr, mv, mb)<= (127, 127, 127):
             font_color = "white"
         
         self.moyenne_hexa = "#{:02x}{:02x}{:02x}".format(int(mr), int(mv), int(mb))
         
-        # La luminance pour convertir l'image couleur en une image noir et blanc est calculée par Gris = 0,299 * Rouge + 0,587 * Vert + 0,114 * Bleu
-        lum_main = 0,299 *mr + 0,587 * mv + 0,114 * mb
-        return self.moyenne_hexa, lum_main, font_color
+        #La luminance de l'image permet de la convertir
+        #en nuances de gris.
+        lum_moy = 0,299 *mr + 0,587 * mv + 0,114 * mb
+        return self.moyenne_hexa, lum_moy, font_color
 
     def subdivision(self, facteur):
         """
@@ -95,7 +100,7 @@ class imageUtilisateur():
         element: coordonnes du coin nord-ouest des carreaux
         """
         #On echantillone la longueur
-        intervalle = [n* self.width/facteur for n in range(facteur)]
+        intervalle = [n* self.dimension/facteur for n in range(facteur)]
 
         coordonnee = []
         for j in intervalle:
@@ -125,13 +130,13 @@ class imageUtilisateur():
 
         for coord in coordonnee:
             #Limites du carreau en longeur et largeur
-            x = coord[0] + self.width/facteur
-            y = coord[1] + self.width/facteur
+            x = coord[0] + self.dimension/facteur
+            y = coord[1] + self.dimension/facteur
             
             rouge = 0
             vert = 0
             bleu = 0
-            #Pour faire la moyenne, nombre de pixels
+            #Pour faire la moyenne, on compte le nombre de pixels
             count = 0
             
             for i in range(int(coord[0]), int(x)):
@@ -146,10 +151,11 @@ class imageUtilisateur():
             couleur_carreaux[coord] = (rouge/count, vert/count, bleu/count)
         return couleur_carreaux
 
-"""
+
 #test
+"""
 if __name__ == "__main___":
-    chemin = "C:/Users/solen/OneDrive/Documents/decomposition-images/gallerie/be1.jpg"
+    chemin = "C:/Users/solen/OneDrive/Bureau/test_galerie/2.jpg"
     image = imageUtilisateur(chemin)
     m = image.couleur_moyenne(1)
     print(m)

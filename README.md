@@ -18,5 +18,12 @@ Pour lancer le programme:
 python src/interface-graphique.py
 ```
 
+Une fois le programme lancé, il faut choisir une image avec le bouton
+`charger image`. Ensuite, il faut charger une galerie d'images
+avec le bouton `charger galerie`. Vous pouvez utiliser votre
+propre galerie - auquel cas vous devrez attendre quelques
+minutes - ou vous pouvez utiliser la galerie par défaut,
+stockée dans `src/galerie`.
+
 # Auteurs
 Emile CARRON, Coline DAMON, Paul GEORGES, Solenn MINGAT
