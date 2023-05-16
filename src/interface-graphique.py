@@ -48,7 +48,7 @@ class interface:
                              font=("Calibri", 8))
         
         self.boutonlancer=tk.Button(self.racine, text="lancer")
-        self.boutonlancer.bind('<Button-1>', self.atribution)
+        self.boutonlancer.bind('<Button-1>', self.attribution)
         
         self.boutoncharger=tk.Button(self.racine, text="charger l'image")
         self.boutoncharger.bind('<Button-1>', self.charger)
@@ -136,7 +136,7 @@ class interface:
             self.miniature.delete("all")
             self.image_originale = iu.imageUtilisateur(chemin, self.taille_caneva)
             self.image_mini = iu.imageUtilisateur(chemin, self.taille_caneva)
-            self.image_mini.image=self.image_originale.image.resize((200, 200))
+            self.image_mini.image = self.image_originale.image.resize((200, 200))
             
             self.IM = ImageTk.PhotoImage(self.image_mini.image)
             self.miniature.create_image(0, 0, anchor = tk.NW, image = self.IM)
@@ -171,7 +171,7 @@ class interface:
                                                  )
 
     
-    def atribution(self, event):
+    def attribution(self, event):
         """ Renvoie vers le bon découpage en fonction du bouton appuyé"""
         
         if self.image_originale == None or self.galerie == None:
@@ -183,9 +183,10 @@ class interface:
             if self.DemoVar.get() == 0:
                 facteur = self.division.get()
                 self.lancer(facteur)
-            else:
-                self.animation()
+            else :
+                #reinitialise le parcours si l'animation est relancée
                 self.parcours_multiple = 0
+                self.animation()
             
     def animation(self):
          """ Permet d'animer le caneva comme un diaporama en découpage l'image en multiple de 2 
@@ -209,7 +210,6 @@ class interface:
         """Lance le programme de création de la mosaïque à partir
         de l'image de l'utilisateur.
         """
-        
         
         liste_carreaux = self.image_originale.couleur_carreaux(facteur)
 
@@ -261,17 +261,6 @@ class interface:
         
         
 
-            
-
+# Lancement de l'interface
 app=interface()
 app.racine.mainloop()
-
-""" 
-image = Image.open("gallerie/1.jpg") 
-photo = ImageTk.PhotoImage(image) 
-
-canvas = tk.Canvas(root, width = image.size[0], height = image.size[1]) 
-canvas.create_image(0,0, anchor = tk.NW, image=photo)
-canvas.pack() 
-root.mainloop()
-"""
