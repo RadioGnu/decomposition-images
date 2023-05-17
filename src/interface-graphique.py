@@ -7,9 +7,10 @@ Created on Wed Mar 15 14:29:33 2023
 """
 import time 
 
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageGrab
 import tkinter as tk
 from tkinter import filedialog as fd
+from random import randint
 
 import fonctions as f
 import imageUtilisateur as iu
@@ -55,6 +56,9 @@ class interface:
         
         self.boutongalerie=tk.Button(self.racine, text="charger la galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
+        
+        self.boutonenregistrer =tk.Button(self.racine, text="Enregistrer l'image")
+        self.boutonenregistrer.bind('<Button-1>', self.enregistrer)
 
         self.labelchoixmodes = tk.Label(self.racine, text = "Choix des modes")
         
@@ -98,6 +102,7 @@ class interface:
         self.labelchoixmodes.pack(side = "top")
         self.bouton_noir_et_blanc.pack(side="top")
         self.boutondemo.pack(side = "top")
+        self.boutonenregistrer.pack(side="top")
         self.boutoncharger.pack(side="bottom")
         self.boutongalerie.pack(side="bottom")
         
@@ -154,6 +159,9 @@ class interface:
         self.boutoncharger.pack()
         
         self.boutongalerie.config(bg = couleur, fg = font_color)
+        self.boutongalerie.pack()
+        
+        self.boutonenregistrer.config(bg = couleur, fg = font_color)
         self.boutongalerie.pack()
         
         self.slider.config(troughcolor = couleur)
@@ -258,8 +266,10 @@ class interface:
         self.liste_logo.append(self.logo)
         #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
         self.mosaique.create_image(x, y, anchor = tk.NW, image = self.logo) 
-        
-        
+    
+    def enregistrer(self, event) :
+        nb = randint(0, 10000)
+        self.mosaique.postscript(file = f"image{nb}.ps")
 
 # Lancement de l'interface
 app=interface()
