@@ -47,10 +47,6 @@ couleur ou la démonstration.
 La démonstration découpera l'image en puissances de 2 successives.
 L'exécution est assez lente, patientez 20 secondes entre chaque
 étape.
-##Enregistrer
-L'image est enregistrée au format postscript (.ps) que vous pouvez
-convertir avec des logiciels de conversion, comme par exemple ce
-site web: https://convertio.co/ps-jpg/
 # Options
 ## Changer la dimensions du canevas
 Si vous souhaitez changer la dimension du canevas pour avoir une image
@@ -61,6 +57,10 @@ Attention, selon les performances de votre ordinateur, il sera
 peut être nécessaire de diminuer le nombre maximal d'images par côté.
 Pour 600 par 600, la limite sur nos ordinateurs est de 70 par exemple.
 
+## Enregistrer
+L'image est enregistrée au format postscript (.ps) que vous pouvez
+convertir avec des logiciels de conversion, comme par exemple ce
+site web: https://convertio.co/ps-jpg/
 # Fichiers
 ## Racine
 - `README.md`
