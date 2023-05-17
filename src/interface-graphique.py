@@ -272,7 +272,7 @@ class interface:
         """Enregistre le canvas en un fichier postcript de nom aléatoire.
         """
         nb = randint(0, 10000)
-        self.mosaique.postscript(file = "../" + f"image{nb}.ps")
+        self.mosaique.postscript(file =  f"../image{nb}.ps")
 
 # Lancement de l'interface
 app=interface()
