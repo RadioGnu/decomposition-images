@@ -47,7 +47,10 @@ couleur ou la démonstration.
 La démonstration découpera l'image en puissances de 2 successives.
 L'exécution est assez lente, patientez 20 secondes entre chaque
 étape.
-
+##Enregistrer
+L'image est enregistrée au format postscript (.ps) que vous pouvez
+convertir avec des logiciels de conversion, comme par exemple ce
+site web: https://convertio.co/ps-jpg/
 # Options
 ## Changer la dimensions du canevas
 Si vous souhaitez changer la dimension du canevas pour avoir une image
@@ -57,6 +60,31 @@ découpée plus grande, il suffit de changer la valeur de l'attribut
 Attention, selon les performances de votre ordinateur, il sera 
 peut être nécessaire de diminuer le nombre maximal d'images par côté.
 Pour 600 par 600, la limite sur nos ordinateurs est de 70 par exemple.
+
+# Fichiers
+## Racine
+- `README.md`
+    Le fichier que vous lisez ;)
+- `requirements.txt`
+    Fichier contenant les dépendances du projet.
+- `LICENSE`
+    License du projet (MIT).
+## Dossier `src`
+- `interface-graphique.py`
+    Application principale du projet, lance une interface graphique
+    qui gère l'interface.
+- `imageGalerie.py`
+    Classe imageGalerie, pour gérer les images de la galerie.
+- `imageUtilisateur.py`
+    Classe imageUtilisateur, pour faire les calculs sur
+    les images de l'utilisateur.
+- `fonctions.py`
+    Fichier contenant les fonctions d'interaction avec les fichiers.
+- `galerie`
+    La galerie de base. Le fichier `valeur_moyenne.csv` contient les
+    valeurs moyennes des images.
+- `testcouleurs.py`
+    Fichier utilisé pour constituer la galerie, en testant les couleurs.
 
 # Auteurs
 Emile CARRON, Coline DAMON, Paul GEORGES, Solenn MINGAT

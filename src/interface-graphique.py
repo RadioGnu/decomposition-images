@@ -5,12 +5,12 @@ Created on Wed Mar 15 14:29:33 2023
 
 @author: ecarrondel
 """
+from random import randint
 import time 
 
-from PIL import Image, ImageTk, ImageGrab
+from PIL import Image, ImageTk
 import tkinter as tk
 from tkinter import filedialog as fd
-from random import randint
 
 import fonctions as f
 import imageUtilisateur as iu
@@ -267,7 +267,10 @@ class interface:
         #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
         self.mosaique.create_image(x, y, anchor = tk.NW, image = self.logo) 
     
+    #Enregistrement optionnel
     def enregistrer(self, event) :
+        """Enregistre le canvas en un fichier postcript de nom aléatoire.
+        """
         nb = randint(0, 10000)
         self.mosaique.postscript(file = f"image{nb}.ps")
 
