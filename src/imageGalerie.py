@@ -5,7 +5,7 @@ image a partir des photos de la galerie d'images"""
 import PIL.Image as PIL
 
 class imageGalerie :
-    def __init__(self, chemin, taille_caneva):
+    def __init__(self, chemin, taille_canevas):
         """
         initialisation de l'objet
 
@@ -22,7 +22,7 @@ class imageGalerie :
         #ouvre l'image avec la bibliothèque pour pouvoir utiliser les fonctions
         self.image = PIL.open(chemin) 
         #permet que toutes les images soient dans les dimensions voulues
-        self.dimension = taille_caneva
+        self.dimension = taille_canevas
         
         self.auto_rescale()        
         
@@ -64,7 +64,8 @@ class imageGalerie :
         #pour la band rouge, verte ou bleue.
         #On somme ces contributions et on les divise par la longeur,
         #pour obtenir la valeur moyenne rouge, verte et bleue.
-        moyenne_rvb = tuple(sum(self.image.getdata(band))/len(self.image.getdata(band)) 
+        taille = len(self.image.getdata(1))
+        moyenne_rvb = tuple(sum(self.image.getdata(band))/taille
                     for band in range(3))
        
         rouge, vert, bleu = moyenne_rvb

@@ -5,6 +5,7 @@ Created on Wed Mar 15 14:29:33 2023
 
 @author: ecarrondel
 """
+from random import randint
 import time 
 
 from PIL import Image, ImageTk
@@ -48,13 +49,16 @@ class interface:
                              font=("Calibri", 8))
         
         self.boutonlancer=tk.Button(self.racine, text="lancer")
-        self.boutonlancer.bind('<Button-1>', self.atribution)
+        self.boutonlancer.bind('<Button-1>', self.attribution)
         
         self.boutoncharger=tk.Button(self.racine, text="charger l'image")
         self.boutoncharger.bind('<Button-1>', self.charger)
         
         self.boutongalerie=tk.Button(self.racine, text="charger la galerie")
         self.boutongalerie.bind('<Button-1>', self.changer_galerie)
+        
+        self.boutonenregistrer =tk.Button(self.racine, text="Enregistrer l'image")
+        self.boutonenregistrer.bind('<Button-1>', self.enregistrer)
 
         self.labelchoixmodes = tk.Label(self.racine, text = "Choix des modes")
         
@@ -98,6 +102,7 @@ class interface:
         self.labelchoixmodes.pack(side = "top")
         self.bouton_noir_et_blanc.pack(side="top")
         self.boutondemo.pack(side = "top")
+        self.boutonenregistrer.pack(side="top")
         self.boutoncharger.pack(side="bottom")
         self.boutongalerie.pack(side="bottom")
         
@@ -136,7 +141,7 @@ class interface:
             self.miniature.delete("all")
             self.image_originale = iu.imageUtilisateur(chemin, self.taille_caneva)
             self.image_mini = iu.imageUtilisateur(chemin, self.taille_caneva)
-            self.image_mini.image=self.image_originale.image.resize((200, 200))
+            self.image_mini.image = self.image_originale.image.resize((200, 200))
             
             self.IM = ImageTk.PhotoImage(self.image_mini.image)
             self.miniature.create_image(0, 0, anchor = tk.NW, image = self.IM)
@@ -156,6 +161,9 @@ class interface:
         self.boutongalerie.config(bg = couleur, fg = font_color)
         self.boutongalerie.pack()
         
+        self.boutonenregistrer.config(bg = couleur, fg = font_color)
+        self.boutongalerie.pack()
+        
         self.slider.config(troughcolor = couleur)
         self.slider.pack()
         
@@ -171,7 +179,7 @@ class interface:
                                                  )
 
     
-    def atribution(self, event):
+    def attribution(self, event):
         """ Renvoie vers le bon découpage en fonction du bouton appuyé"""
         
         if self.image_originale == None or self.galerie == None:
@@ -183,9 +191,10 @@ class interface:
             if self.DemoVar.get() == 0:
                 facteur = self.division.get()
                 self.lancer(facteur)
-            else:
-                self.animation()
+            else :
+                #reinitialise le parcours si l'animation est relancée
                 self.parcours_multiple = 0
+                self.animation()
             
     def animation(self):
          """ Permet d'animer le caneva comme un diaporama en découpage l'image en multiple de 2 
@@ -209,7 +218,6 @@ class interface:
         """Lance le programme de création de la mosaïque à partir
         de l'image de l'utilisateur.
         """
-        
         
         liste_carreaux = self.image_originale.couleur_carreaux(facteur)
 
@@ -258,20 +266,14 @@ class interface:
         self.liste_logo.append(self.logo)
         #ptet ajouter state = tk.DISABLED, qui devrait rendre l'image inerte au curseur
         self.mosaique.create_image(x, y, anchor = tk.NW, image = self.logo) 
-        
-        
+    
+    #Enregistrement optionnel
+    def enregistrer(self, event) :
+        """Enregistre le canvas en un fichier postcript de nom aléatoire.
+        """
+        nb = randint(0, 10000)
+        self.mosaique.postscript(file =  f"../image{nb}.ps")
 
-            
-
+# Lancement de l'interface
 app=interface()
 app.racine.mainloop()
-
-""" 
-image = Image.open("gallerie/1.jpg") 
-photo = ImageTk.PhotoImage(image) 
-
-canvas = tk.Canvas(root, width = image.size[0], height = image.size[1]) 
-canvas.create_image(0,0, anchor = tk.NW, image=photo)
-canvas.pack() 
-root.mainloop()
-"""

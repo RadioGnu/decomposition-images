@@ -10,6 +10,17 @@ import tkinter as tk
 
 
 def test_couleurs(listeRGB):
+    """Affiche une série de carré de couleur contenue dans listeRGB 
+
+    Parameters
+    ----------
+    listeRGB: list of tuple
+        Liste de tuples (r,g,b) représentant une couleur.
+        r, g et b sont entre 0 et 255.
+    Returns
+    -------
+    None
+    """
     coord=[0,0]
     for j in  listeRGB:
         colorhex="#"

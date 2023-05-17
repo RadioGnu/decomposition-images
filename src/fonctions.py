@@ -231,7 +231,7 @@ def choix_image(val_moyenne, dico_galerie):
 
 def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
     """
-    Même fonctionement que liste_image_proche sans le côté aléatoire, permettant de choisir 
+    Même fonctionnement que liste_image_proche sans le côté aléatoire, permettant de choisir 
     l'image la plus proche en terme de luminosité moyenne
 
     Parameters
@@ -245,19 +245,19 @@ def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
 
     Returns
     -------
-    image_proche : TYPE
-        DESCRIPTION.
+    image_proche : objet PIL.Image 
+        L'image choisie aléatoirement pour aller sur le canevas.
 
     """
     
     liste_lum = []
     ecart_min = 256
     
-    #parcour du dictionaire
+    #parcours du dictionnaire
     for image, imageNB, val_moy in dico_galerie.values():
         lum_moy = val_moy[3]
         liste_lum.append(lum_moy)
-        #calcul de l'écart de lum entre la subdivision et l'image
+        #calcul de l'écart de luminance entre la subdivision et l'image
         ecart = abs(lum_moy-lum_image_ref)
 
         if ecart <= ecart_min :
@@ -267,7 +267,7 @@ def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
     return image_proche
 
 
-def rescale(image, facteur, taille_caneva):
+def rescale(image, facteur, taille_canevas):
     """Permet de mettre l'image a la taille voulue pour le canevas
     
     Parameters
@@ -278,7 +278,7 @@ def rescale(image, facteur, taille_caneva):
     facteur : int
         facteur de division de la taille de l'image
     
-    taille_caneva : int
+    taille_canevas : int
         taille maximale que les images de la galerie peuvent avoir sur le caneva
 
     Returns
@@ -286,8 +286,9 @@ def rescale(image, facteur, taille_caneva):
     rescaled_image : image (jpeg, png ... en fonction de l'image d'origine)
     """
     
-    # +1 pour eviter d'avoir des trous dans la grille => arondi au dessus plutot que au dessous
-    taille = int(taille_caneva/facteur) +1
+    # +1 pour éviter d'avoir des trous dans la grille 
+    # => arrondi au dessus plutot que au dessous
+    taille = int(taille_canevas/facteur) +1
     
     rescaled_image = image.resize((taille, taille))
     return rescaled_image
