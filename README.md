@@ -29,8 +29,9 @@ Une galerie est fournie avec le programme dans le fichier `src`, qui est déjà
 chargée. Elle se chargera donc très rapidement.
 Il est possible d'y rajouter des images.
 
-Il est également possible d'utiliser une autre galerie. Pour cela, il faut 
-s'assurer que le dossier contient **uniquement** des images (voir format). 
+Il est également possible d'utiliser une autre galerie. Les images dans le
+fichier au format png, jpg et tif seront chargées, ainsi que celles
+contenues dans les sous-dossiers de la galerie.
 Le premier chargement peut prendre un certain temps, les utilisations 
 suivantes seront plus rapide.
 
