@@ -5,6 +5,7 @@ Created on Wed Mar 15 14:29:33 2023
 
 @author: ecarrondel
 """
+import os
 from random import randint
 import time 
 
@@ -184,7 +185,7 @@ class interface:
         
         if self.image_originale == None or self.galerie == None:
             self.message = tk.messagebox.showwarning(title="Erreur",
-                                    message="Vous n'avez pas choisie d'image et/ou de galerie. \n"
+                                    message="Vous n'avez pas choisi d'image et/ou de galerie. \n"
                                             +"Veuillez charger votre image et votre galerie pour lancer le programe")
         
         else:
@@ -270,9 +271,18 @@ class interface:
     #Enregistrement optionnel
     def enregistrer(self, event) :
         """Enregistre le canvas en un fichier postcript de nom aléatoire.
+
+        Utilise random.randint pour générer le numéro du fichier.
+        Est enregistré où l'utilisateur le souhaite.
         """
         nb = randint(0, 10000)
-        self.mosaique.postscript(file =  f"../image{nb}.ps")
+        fichier_defaut = f"image{nb}.ps"
+        files = [('Postcript Files', '*.ps')]
+        fichier = fd.asksaveasfile(filetypes = files,
+                                   defaultextension = files,
+                                   initialfile=fichier_defaut,
+                                   initialdir = '.')
+        self.mosaique.postscript(file =  fichier)
 
 # Lancement de l'interface
 app=interface()

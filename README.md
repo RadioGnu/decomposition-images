@@ -29,8 +29,9 @@ Une galerie est fournie avec le programme dans le fichier `src`, qui est déjà
 chargée. Elle se chargera donc très rapidement.
 Il est possible d'y rajouter des images.
 
-Il est également possible d'utiliser une autre galerie. Pour cela, il faut 
-s'assurer que le dossier contient **uniquement** des images (voir format). 
+Il est également possible d'utiliser une autre galerie. Les images dans le
+fichier au format png, jpg et tif seront chargées, ainsi que celles
+contenues dans les sous-dossiers de la galerie.
 Le premier chargement peut prendre un certain temps, les utilisations 
 suivantes seront plus rapide.
 
@@ -61,6 +62,11 @@ Pour 600 par 600, la limite sur nos ordinateurs est de 70 par exemple.
 L'image est enregistrée au format postscript (.ps) que vous pouvez
 convertir avec des logiciels de conversion, comme par exemple ce
 site web: https://convertio.co/ps-jpg/
+Elle n'est malheuresement pas de très bonne qualité, prendre un
+screenshot est peut-être une meilleure solution.
+
+Vous pouvez choisir où enregistrer l'image, un nom par défaut
+est renseigné.
 # Fichiers
 ## Racine
 - `README.md`
