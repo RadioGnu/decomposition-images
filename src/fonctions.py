@@ -6,13 +6,14 @@ Created on Wed Mar 15 14:31:10 2023
 """
 
 import csv
-import os
+from itertools import chain
+from pathlib import Path
 import random
 
 import imageGalerie as im
 
 
-def dico_galerie(dossier, taille_caneva):
+def dico_galerie(dossier, taille_canevas):
     """Lit le dossier contenant les images de la galerie et crée
     un dictionnaire images_moyennes qui regroupe les objet images
 
@@ -21,7 +22,7 @@ def dico_galerie(dossier, taille_caneva):
     dossier: str
         Chemin d'acces vers le dossier contenant la galerie
         
-    taille_caneva : int
+    taille_canevas : int
         taille maximale que les images de la galerie peuvent avoir
 
     Returns
@@ -32,26 +33,30 @@ def dico_galerie(dossier, taille_caneva):
     """
    
     
-    liste_images = os.listdir(dossier)
-    try:
-        id_valeur_moyenne = liste_images.index("valeur_moyenne.csv")
-    except ValueError:
-        id_valeur_moyenne = -1
-    if id_valeur_moyenne == -1:
+    galerie = Path(dossier)
+    #Code à améliorer, pas très extensible à d'autres extensions
+    #On cherche les images dans les sous-dossiers de la galerie
+    generateur_images = chain(galerie.glob('**/*.png'), 
+                              galerie.glob('**/*.jpg'),
+                              galerie.glob('**/*.tif'))
+    chemin_valeur_moy = galerie / 'valeur_moyenne.csv'
+    #Donne le chemin relatif à la galerie
+    liste_images = [str(chemin.relative_to(galerie))
+                    for chemin in generateur_images]
+    if chemin_valeur_moy.exists():
+        images_moyennes, images_enregistrees = deserialiser(dossier, liste_images, taille_canevas)
+    else:
         images_moyennes = {} #initialisation du dictionnaire
         images_enregistrees = [] #pas d'images enregistrées
-    else:
-        images_moyennes, images_enregistrees = deserialiser(dossier, liste_images, taille_caneva)
-        liste_images.pop(id_valeur_moyenne)
 
-    for i in range(len(liste_images)) :
-        image = liste_images[i]
-        acces = dossier + "/" + image 
+    i = 0
+    for fichier in liste_images:
+        acces = dossier + "/" + fichier
         if acces not in images_enregistrees:
             #pour retrouver les images à coup sûr dans les fichiers
             #-> chemin d'accès complet
             #création de l'objet image a partir du chemin d'accès
-            imageGal = im.imageGalerie(acces, taille_caneva)
+            imageGal = im.imageGalerie(acces, taille_canevas)
             
             # utilisation de la méthode couleur moyenne de la classe imageGalerie
             # incrémentation du dictionnaire d'images couleurs + luminosité en dernière valeur
@@ -61,6 +66,7 @@ def dico_galerie(dossier, taille_caneva):
             imageNB = imageNB.convert("L")
             images_moyennes[i] = imageGal, imageNB, val
             
+        i += 1
             
     serialiser(images_moyennes, dossier)
         
@@ -82,7 +88,7 @@ def serialiser(images_moyennes, dossier):
     dossier: str
         Chemin d'acces vers le dossier contenant la galerie
     
-    taille_caneva : int
+    taille_canevas : int
         taille maximale que les images de la galerie peuvent avoir
 
     Returns:
@@ -101,7 +107,7 @@ def serialiser(images_moyennes, dossier):
 
 
 
-def deserialiser(dossier, liste_images, taille_caneva):
+def deserialiser(dossier, liste_images, taille_canevas):
     """Stocke le dictionnaire contenant les valeurs moyennes pour chaque image
     dans un fichier csv contenu dans le fichier de la galerie.
     Permet de grandement accelerer la lecture des images après avoir charger 
@@ -115,7 +121,7 @@ def deserialiser(dossier, liste_images, taille_caneva):
     liste_images: list
         liste des chemins d'accès de toutes les images contenues dans la galerie
     
-    taille_caneva : int
+    taille_canevas : int
         taille maximale que les images de la galerie peuvent avoir
 
     Returns:
@@ -136,12 +142,13 @@ def deserialiser(dossier, liste_images, taille_caneva):
         images_enregistrees = []
         images_moyennes = {}
         for row in lecteur:
+            #Nom du fichier (ex: v16.jpg)
             nom = row[0]
             
             if nom in liste_images:
                 #On lit simplement un chemin d'accès
                 chemin = dossier + '/' + nom 
-                image = im.imageGalerie(chemin, taille_caneva)
+                image = im.imageGalerie(chemin, taille_canevas)
                 imageNB = image.image
                 imageNB = imageNB.convert("L")
                 #et on ajoute à liste_images
@@ -219,7 +226,7 @@ def choix_image(val_moyenne, dico_galerie):
     Returns
     -------
     image_finale : objet imageGalerie 
-        L'image choisie aléatoirement pour aller sur le canevas.
+        L'image choisie aléatoirement pour aller sur le canevass.
 
     """
     
@@ -246,7 +253,7 @@ def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
     Returns
     -------
     image_proche : objet PIL.Image 
-        L'image choisie aléatoirement pour aller sur le canevas.
+        L'image choisie aléatoirement pour aller sur le canevass.
 
     """
     
@@ -267,8 +274,8 @@ def image_proche_noir_et_blanc(lum_image_ref, dico_galerie):
     return image_proche
 
 
-def rescale(image, facteur, taille_canevas):
-    """Permet de mettre l'image a la taille voulue pour le canevas
+def rescale(image, facteur, taille_canevass):
+    """Permet de mettre l'image a la taille voulue pour le canevass
     
     Parameters
     ----------
@@ -278,8 +285,8 @@ def rescale(image, facteur, taille_canevas):
     facteur : int
         facteur de division de la taille de l'image
     
-    taille_canevas : int
-        taille maximale que les images de la galerie peuvent avoir sur le caneva
+    taille_canevass : int
+        taille maximale que les images de la galerie peuvent avoir sur le canevas
 
     Returns
     -------
@@ -288,7 +295,7 @@ def rescale(image, facteur, taille_canevas):
     
     # +1 pour éviter d'avoir des trous dans la grille 
     # => arrondi au dessus plutot que au dessous
-    taille = int(taille_canevas/facteur) +1
+    taille = int(taille_canevass/facteur) +1
     
     rescaled_image = image.resize((taille, taille))
     return rescaled_image
