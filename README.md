@@ -61,6 +61,11 @@ Pour 600 par 600, la limite sur nos ordinateurs est de 70 par exemple.
 L'image est enregistrée au format postscript (.ps) que vous pouvez
 convertir avec des logiciels de conversion, comme par exemple ce
 site web: https://convertio.co/ps-jpg/
+Elle n'est malheuresement pas de très bonne qualité, prendre un
+screenshot est peut-être une meilleure solution.
+
+Vous pouvez choisir où enregistrer l'image, un nom par défaut
+est renseigné.
 # Fichiers
 ## Racine
 - `README.md`
